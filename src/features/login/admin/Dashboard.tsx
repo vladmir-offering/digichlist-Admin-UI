@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
         flexGrow: 1,
     },
 }));
-const Dashboard = ({ setAuthInfo }) => {
+const Dashboard = ({ setAuthInfo }): JSX.Element => {
     const classes = useStyles();
     const dService = new digichServise();
     const logoutHandler = () => {

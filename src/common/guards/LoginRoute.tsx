@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
-const LoginRoute = ({ component: Component, path, authInfo, setAuthInfo }) => {
+const LoginRoute = ({ component: Component, path, authInfo, setAuthInfo }): JSX.Element => {
     return (
         <Route
             render={(props) => {

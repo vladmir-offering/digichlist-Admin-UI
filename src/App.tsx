@@ -8,7 +8,7 @@ import ProtectedRoute from './common/guards/ProtectedRoute';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import './App.css';
 
-function App() {
+function App(): JSX.Element {
     const [authInfo, setAuthInfo] = useState(false);
     const dService = new digichServise();
     useEffect(() => {

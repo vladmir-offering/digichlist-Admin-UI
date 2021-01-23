@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const Login = ({ setAuthInfo }) => {
+const Login = ({ setAuthInfo }): JSX.Element => {
     const [snack, setSnack] = useState({ open: false, message: '', type: 'success' });
     const dService = new digichServise();
     const classes = useStyles();
