@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Login from './features/login';
-import Dashboard from './features/login/admin/Dashboard';
+import AdminPanel from './features/login/admin/AdminPanel';
 import LoginRoute from './common/guards/LoginRoute';
 import { digichServise } from './/common/utils/api';
 
@@ -26,7 +26,7 @@ function App(): JSX.Element {
                 authInfo={authInfo}
                 setAuthInfo={setAuthInfo}
                 path='/admin'
-                component={Dashboard}
+                component={AdminPanel}
             />
             <LoginRoute
                 setAuthInfo={setAuthInfo}

@@ -3,22 +3,15 @@ import { environment } from '../../environments/environment';
 
 export class digichServise {
     private telegramApiAxios;
-    private token;
-    constructor() {
-        localStorage.getItem('secret-auth-token')
-            ? (this.token = localStorage.getItem('secret-auth-token'))
-            : (this.token = '');
-    }
     baseURL = `${environment.BASEURL}`;
     async login(body) {
         try {
             const response = await axios.post(`${environment.BASEURL}authorization/login`, body);
-            localStorage.setItem('secret-auth-token', response.data.token);
-            this.setToken(response.data.token);
+            sessionStorage.setItem('secret-auth-token', response.data.token);
             this.telegramApiAxios = axios.create({
                 baseURL: this.baseURL,
                 headers: {
-                    Authorization: localStorage.getItem('secret-auth-token'),
+                    Authorization: sessionStorage.getItem('secret-auth-token'),
                 },
             });
             return response.data;
@@ -26,15 +19,10 @@ export class digichServise {
             return { err: err };
         }
     }
-
     logOut() {
-        localStorage.removeItem('secret-auth-token');
-        this.setToken('');
-    }
-    setToken(value: string) {
-        this.token = value;
+        sessionStorage.removeItem('secret-auth-token');
     }
     isLogged() {
-        return !!this.token;
+        return !!sessionStorage.getItem('secret-auth-token');
     }
 }
