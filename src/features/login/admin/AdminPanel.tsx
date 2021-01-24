@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link, Route, Switch } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Drawer from '@material-ui/core/Drawer';
@@ -19,9 +20,9 @@ import { v4 as uuidv4 } from 'uuid';
 
 // import VisibleItemList from '../containers/VisibleItemList';
 import { MainListItems } from './AdminNavItem';
-
+import Admins from './admins';
 import { navList } from './nav';
-import { digichServise } from '../../../common/utils/api';
+import { logOut } from '../../../common/utils/api';
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -78,9 +79,8 @@ const AdminPanel = ({ setAuthInfo }): JSX.Element => {
     function handleDrawerToggle() {
         setMobileOpen(!mobileOpen);
     }
-    const dService = new digichServise();
-    const logoutHandler = () => {
-        dService.logOut();
+    const logoutHandler = async () => {
+        logOut();
         setAuthInfo(false);
     };
     const drawer = (
@@ -150,7 +150,9 @@ const AdminPanel = ({ setAuthInfo }): JSX.Element => {
             </nav>
             <div className={classes.content}>
                 <div className={classes.toolbar} />
-                {/* <VisibleItemList /> */}
+                <Switch>
+                    <Route path='/admin/admins' component={Admins} />
+                </Switch>
             </div>
         </div>
     );

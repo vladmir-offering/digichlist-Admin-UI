@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Login from './features/login';
 import AdminPanel from './features/login/admin/AdminPanel';
 import LoginRoute from './common/guards/LoginRoute';
-import { digichServise } from './/common/utils/api';
+import { isLogged } from './common/utils/api';
 
 import ProtectedRoute from './common/guards/ProtectedRoute';
 import { Redirect, Route, Switch } from 'react-router-dom';
@@ -10,10 +10,9 @@ import './App.css';
 
 function App(): JSX.Element {
     const [authInfo, setAuthInfo] = useState(false);
-    const dService = new digichServise();
     useEffect(() => {
         async function isAuth() {
-            const res = await dService.isLogged();
+            const res = await isLogged();
             setAuthInfo(res);
         }
         isAuth();

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import { digichServise } from './../../common/utils/api';
+import { isLogged, login } from './../../common/utils/api';
 import SnackbarHandler from './../../common/components/Snackbar/snackbar';
 
 import Typography from '@material-ui/core/Typography';
@@ -36,7 +36,6 @@ const useStyles = makeStyles((theme) => ({
 
 const Login = ({ setAuthInfo }): JSX.Element => {
     const [snack, setSnack] = useState({ open: false, message: '', type: 'success' });
-    const dService = new digichServise();
     const classes = useStyles();
 
     const initialValues = {
@@ -49,7 +48,7 @@ const Login = ({ setAuthInfo }): JSX.Element => {
     });
     const submitHandler = async (value) => {
         const logInfo = { email: value.name, password: value.password };
-        const response = await dService.login(logInfo);
+        const response = await login(logInfo);
         if (response.err) {
             setSnack({
                 open: true,
@@ -57,7 +56,7 @@ const Login = ({ setAuthInfo }): JSX.Element => {
                 type: 'error',
             });
         }
-        const isAuth = await dService.isLogged();
+        const isAuth = await isLogged();
         setAuthInfo(isAuth);
     };
 
