@@ -25,7 +25,9 @@ module.exports = {
     },
     rules: {
         'prettier/prettier': 0,
-    },
+        'react/prop-types': 0,
+        'prefer-const':0,
+        },
     settings: {
         react: {
             version: 'detect',
