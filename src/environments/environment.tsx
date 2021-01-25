@@ -1,4 +1,4 @@
 export const environment = {
     production: false,
-    BASEURL: 'https://dtapi.if.ua/api/',
+    BASEURL: 'http://localhost:5000/api/',
 };
