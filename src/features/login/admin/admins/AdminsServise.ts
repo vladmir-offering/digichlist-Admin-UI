@@ -1,6 +1,5 @@
 import { telegramApiAxios } from '../../../../common/utils/interceptor';
 import { environment } from '../../../../environments/environment';
-import axios from 'axios';
 
 export const getAdmins = async () => await telegramApiAxios.get(`${environment.BASEURL}admin/all`);
 
@@ -28,16 +27,26 @@ export const deleteAdminData = async (id, adminsData) => {
 
 export const updateAdminData = async (adminsData, editAdmin) => {
     try {
+        const newData =
+            editAdmin.data.confirmPassword === ''
+                ? {
+                      email: editAdmin.data.email,
+                      username: editAdmin.data.username,
+                      password: 'Qwerty123',
+                  }
+                : {
+                      email: editAdmin.data.email,
+                      username: editAdmin.data.username,
+                      password: editAdmin.data.password,
+                  };
         const response = await telegramApiAxios.patch(
             `${environment.BASEURL}admin/update/${editAdmin.editId}`,
-            editAdmin.data,
+            newData,
         );
-        console.log(response.data.admin);
 
         const updatedList = adminsData.map((item) =>
             response.data.admin._id === item._id ? response.data.admin : item,
         );
-        console.log(updatedList);
         return updatedList;
     } catch (err) {
         return { err: err };
