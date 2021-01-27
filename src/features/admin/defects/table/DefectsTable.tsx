@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
     Table,
     TableBody,
@@ -33,9 +33,11 @@ import {
 import styles from './DefectsTable.module.css';
 import { columns, statuses, priorities } from '../models/DefectsModels';
 import DefectsContext from '../DefectsContext';
+import UserContext from '../../../login/UserContext';
 
 function DefectsTable(): JSX.Element {
     const [open, setOpen] = React.useState(false);
+    const [admin_username, setAdminUserName] = useState(localStorage.getItem('admin_username'));
     const [snack, setSnack] = useState({ open: false, message: '', type: '' });
     const [dataSource, setDataSource] = useState(Array);
     const [FilteredDataSource, setFilteredDataSource] = useState(Array);
@@ -70,13 +72,13 @@ function DefectsTable(): JSX.Element {
 
     useEffect(() => {
         if (updated.status) {
-            updateModeSubmit(updated.data, setSnack, setDataSource, closeModal);
+            updateModeSubmit(updated.data, admin_username, setSnack, setDataSource, closeModal);
         }
     }, [updated]);
 
     useEffect(() => {
         if (status.status) {
-            checkModeSumbit(status.data, status.value, setSnack, setDataSource);
+            checkModeSumbit(status.data, admin_username, status.value, setSnack, setDataSource);
         }
     }, [status]);
 
@@ -116,7 +118,9 @@ function DefectsTable(): JSX.Element {
                             Список дефектів
                         </Typography>
                         <FormGroup row className={styles.formGroup}>
-                            <Typography>Виберіть один із фільтрів</Typography>
+                            <Typography style={{ color: 'rgba(111, 111, 111, 0.87)' }}>
+                                Виберіть один із фільтрів
+                            </Typography>
                             <span style={{ width: '1px', margin: '0 1rem' }} />
                             <FormControl className={styles.formControl}>
                                 <InputLabel id='status-filter'>Фільтри по статусу</InputLabel>

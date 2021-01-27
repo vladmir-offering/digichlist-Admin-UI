@@ -7,7 +7,7 @@ export async function getDefects(): Promise<GetDefects> {
         return res.data;
     });
 }
-export async function editDefect(id: string | undefined, body: Defect): Promise<GetDefects> {
+export async function editDefect(id: string | undefined, body: Defect): Promise<any> {
     return await telegramApiAxios
         .patch(`${environment.BASEURL}defect/update/${id}`, body)
         .then((res) => res.data);
@@ -20,6 +20,7 @@ export async function deleteDefect(id: string): Promise<GetDefects> {
 
 export function updateModeSubmit(
     data: any,
+    admin_username,
     setSnack: any,
     setDataSource: any,
     closeModal: any,
@@ -40,6 +41,7 @@ export function updateModeSubmit(
         const updatedData: Defect = {
             ...data.values,
             open_date: new Date(data.values.open_date).toISOString().substr(0, 10),
+            admin_username,
         };
         editDefect(data.id, updatedData)
             .then((res) => {
@@ -92,21 +94,20 @@ export function deleteModeSubmit(
             }),
         );
 }
-export function checkModeSumbit(data, statusValue, setSnack, setDataSource): void {
+export function checkModeSumbit(data, admin_username, statusValue, setSnack, setDataSource): void {
     const id = data._id;
     const updatedData: Defect = {
         ...data,
         _id: id,
         status: statusValue,
         open_date: new Date(data.open_date).toISOString().substr(0, 10),
+        admin_username,
     };
     editDefect(id, updatedData)
         .then((res) => {
             if (res.response === 'ok') {
                 setDataSource((prevVal) =>
-                    prevVal.map((item) =>
-                        item._id === data.id ? (item = { _id: data.id, ...data.values }) : item,
-                    ),
+                    prevVal.map((item) => (item._id === id ? (item = { ...res.defect }) : item)),
                 );
                 setSnack({
                     open: true,
