@@ -13,13 +13,42 @@ import AddCircle from '@material-ui/icons/AddCircle';
 import SearchIcon from '@material-ui/icons/Search';
 
 import styles from './Admins.module.css';
-import { getAdmins } from './AdminsServise';
+import { getAdmins, addAdminData, deleteAdminData, updateAdminData } from './AdminsServise';
 import AdminRow from './AdminRow';
+import AdminAddDialog from './AdminAddDialog';
+
+import SnackbarHandler from '../../../../common/components/Snackbar/snackbar';
+
 export const Admins = () => {
+    type Admin = Array<{
+        email: string;
+        username: string;
+        id: string;
+        password: string;
+    }>;
+
     const [loading, setLoading] = useState(true);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
-    const [adminsData, setAdminsData] = useState([]);
+    const [adminsData, setAdminsData] = useState<Admin | []>([]);
+    const [open, setOpen] = useState(false);
+
+    const [addAdmin, setAddAdmin] = useState({
+        add: false,
+        data: {},
+    });
+
+    const [editAdmin, setEditAdmin] = useState({
+        edit: false,
+        data: {},
+        editId: 0,
+        isChanged: false,
+    });
+
+    const [deleteAdmin, setDeleteAdmin] = useState({
+        delete: false,
+        id: 0,
+    });
     const [snack, setSnack] = useState({ open: false, message: '', type: 'success' });
     useEffect(() => {
         (async function () {
@@ -27,9 +56,108 @@ export const Admins = () => {
             if (typeof response === 'object') {
                 setAdminsData(response.data.admins);
                 setLoading(false);
+                setSnack({
+                    open: true,
+                    message: 'Адміни успішно завантажені',
+                    type: 'success',
+                });
+            } else {
+                setSnack({
+                    open: true,
+                    message: 'Сталася помилка при завантажені',
+                    type: 'error',
+                });
             }
         })();
     }, []);
+
+    useEffect(() => {
+        (async function () {
+            if (addAdmin.add) {
+                const response = await addAdminData(addAdmin.data);
+                console.log(response);
+                if (!response.err) {
+                    setAdminsData([...adminsData, response]);
+                    setOpen(false);
+                    setPage(Math.floor((adminsData.length - 1) / rowsPerPage));
+                    setSnack({
+                        open: true,
+                        message: 'Адміністратора додано',
+                        type: 'success',
+                    });
+                } else {
+                    setOpen(false);
+                    setSnack({
+                        open: true,
+                        message: response.err,
+                        type: 'error',
+                    });
+                }
+            }
+        })();
+    }, [addAdmin]);
+
+    useEffect(() => {
+        (async function () {
+            if (deleteAdmin.delete) {
+                const response = await deleteAdminData(deleteAdmin.id, adminsData);
+                if (Array.isArray(response)) {
+                    setAdminsData(response);
+                    setPage(Math.ceil((adminsData.length - 1) / rowsPerPage) - 1);
+                    setSnack({
+                        open: true,
+                        message: 'Адміністратора видалено',
+                        type: 'success',
+                    });
+                } else {
+                    setOpen(false);
+                    setSnack({
+                        open: true,
+                        message: response.err,
+                        type: 'error',
+                    });
+                }
+            }
+        })();
+    }, [deleteAdmin]);
+
+    useEffect(() => {
+        (async function () {
+            console.log(editAdmin);
+            if (!editAdmin.isChanged && editAdmin.edit) {
+                setSnack({
+                    open: true,
+                    message: 'Нічого не змінено',
+                    type: 'info',
+                });
+            } else {
+                if (editAdmin.edit) {
+                    const response = await updateAdminData(adminsData, editAdmin);
+                    console.log(response);
+                    if (Array.isArray(response)) {
+                        setAdminsData(response);
+                        setOpen(false);
+                        setSnack({
+                            open: true,
+                            message: 'Групу редаговано',
+                            type: 'success',
+                        });
+                    } else {
+                        setSnack({
+                            open: true,
+                            message: response.err,
+                            type: 'error',
+                        });
+                        setOpen(false);
+                    }
+                }
+            }
+        })();
+    }, [editAdmin]);
+
+    const dialogOpenHandler = () => {
+        setOpen(true);
+    };
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -56,7 +184,7 @@ export const Admins = () => {
                     {'Адміністратори'}
                 </Typography>
                 <Button
-                    // onClick={dialogOpenHandler}
+                    onClick={dialogOpenHandler}
                     disableElevation
                     variant='contained'
                     color='primary'
@@ -78,7 +206,13 @@ export const Admins = () => {
                         {adminsData
                             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                             .map((adminData, index) => (
-                                <AdminRow adminData={adminData} key={uuidv4()} id={index} />
+                                <AdminRow
+                                    adminData={adminData}
+                                    key={uuidv4()}
+                                    id={index}
+                                    setEditAdmin={setEditAdmin}
+                                    setDeleteAdmin={setDeleteAdmin}
+                                />
                             ))}
                     </TableBody>
                 </Table>
@@ -92,6 +226,15 @@ export const Admins = () => {
                     onChangeRowsPerPage={handleChangeRowsPerPage}
                 />
             </div>
+            <SnackbarHandler snack={snack} setSnack={setSnack} />
+            <AdminAddDialog
+                open={open}
+                setOpen={setOpen}
+                setAddAdmin={setAddAdmin}
+                admin={null}
+                setEdit={null}
+                setEditAdmin={null}
+            />
         </div>
     );
 };

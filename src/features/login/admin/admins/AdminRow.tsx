@@ -5,21 +5,20 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { Button } from '@material-ui/core';
 
-const AdminRow = ({ adminData, id }) => {
-    const { username, email } = adminData;
+import ConfirmDelete from './ConfirmDelete';
+import AdminAddDialog from './AdminAddDialog';
+
+const AdminRow = ({ adminData, id, setDeleteAdmin, setEditAdmin }) => {
+    const { username, email, _id } = adminData;
     const [edit, setEdit] = useState(false);
-    const editSpecialityHandler = () => {
-        // setEdit(true)
+    const [openDel, setOpenDel] = useState(false);
+
+    const dialogOpenHandler = () => {
+        setEdit(true);
     };
-    const deleteSpecialityHandler = () => {
-        // deleteEntity('Speciality', speciality_id).then((res) => {
-        //   if (res.data.response === 'ok') {
-        //     const newArray = specialityDates.filter(
-        //       (item) => item.speciality_id !== speciality_id
-        //     )
-        //     setSpecialityDate(newArray)
-        //   }
-        // })
+
+    const dialogOpenDelHandler = () => {
+        setOpenDel(true);
     };
     return (
         <TableRow>
@@ -28,14 +27,32 @@ const AdminRow = ({ adminData, id }) => {
             <TableCell>{email}</TableCell>
             <TableCell>
                 <div>
-                    <Button color='primary' onClick={editSpecialityHandler}>
+                    <Button color='primary' onClick={dialogOpenHandler}>
                         <EditIcon />
                     </Button>
-                    <Button color='primary' onClick={deleteSpecialityHandler}>
+                    <Button color='primary' onClick={dialogOpenDelHandler}>
                         <DeleteIcon />
                     </Button>
                 </div>
             </TableCell>
+            {openDel ? (
+                <ConfirmDelete
+                    open={openDel}
+                    setShowDelDialog={setOpenDel}
+                    id={_id}
+                    setDeleteAdmin={setDeleteAdmin}
+                />
+            ) : null}
+            {edit ? (
+                <AdminAddDialog
+                    open={edit}
+                    setOpen={setEdit}
+                    setAddAdmin={null}
+                    admin={adminData}
+                    setEdit={setEdit}
+                    setEditAdmin={setEditAdmin}
+                />
+            ) : null}
         </TableRow>
     );
 };
