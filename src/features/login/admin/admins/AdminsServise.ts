@@ -27,18 +27,11 @@ export const deleteAdminData = async (id, adminsData) => {
 
 export const updateAdminData = async (adminsData, editAdmin) => {
     try {
-        const newData =
-            editAdmin.data.confirmPassword === ''
-                ? {
-                      email: editAdmin.data.email,
-                      username: editAdmin.data.username,
-                      password: 'Qwerty123',
-                  }
-                : {
-                      email: editAdmin.data.email,
-                      username: editAdmin.data.username,
-                      password: editAdmin.data.password,
-                  };
+        const newData = {
+            email: editAdmin.data.email,
+            username: editAdmin.data.username,
+            password: editAdmin.data.password,
+        };
         const response = await telegramApiAxios.patch(
             `${environment.BASEURL}admin/update/${editAdmin.editId}`,
             newData,
