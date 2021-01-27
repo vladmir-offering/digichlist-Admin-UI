@@ -20,7 +20,6 @@ interface IStatus {
 interface IDefectsContext {
     setDeleted: React.Dispatch<React.SetStateAction<IDeleted>>;
     setUpdated: React.Dispatch<React.SetStateAction<IUpdated>>;
-    setStatus: React.Dispatch<React.SetStateAction<IStatus>>;
 }
 
 const DefectsContext = React.createContext<IDefectsContext>({} as IDefectsContext);

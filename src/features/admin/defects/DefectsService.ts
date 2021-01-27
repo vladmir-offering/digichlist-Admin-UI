@@ -28,7 +28,8 @@ export function updateModeSubmit(
         data.values.title === data.intialFormValues.title &&
         data.values.room === data.intialFormValues.room &&
         data.values.status === data.intialFormValues.status &&
-        data.values.open_date === data.intialFormValues.open_date
+        data.values.open_date === data.intialFormValues.open_date &&
+        data.values.priority === data.intialFormValues.priority
     ) {
         setSnack({
             open: true,
@@ -91,13 +92,73 @@ export function deleteModeSubmit(
             }),
         );
 }
-export function checkModeSumbit(body, statusType, setSnack, setDataSource): void {
-    const id = body._id;
+export function checkModeSumbit(data, statusValue, setSnack, setDataSource): void {
+    const id = data._id;
     const updatedData: Defect = {
-        ...body,
+        ...data,
         _id: id,
-        status: statusType,
-        open_date: new Date(body.open_date).toISOString().substr(0, 10),
+        status: statusValue,
+        open_date: new Date(data.open_date).toISOString().substr(0, 10),
     };
-    editDefect(id, updatedData).then((res) => console.log(res));
+    editDefect(id, updatedData)
+        .then((res) => {
+            if (res.response === 'ok') {
+                setDataSource((prevVal) =>
+                    prevVal.map((item) =>
+                        item._id === data.id ? (item = { _id: data.id, ...data.values }) : item,
+                    ),
+                );
+                setSnack({
+                    open: true,
+                    message: 'Дефект успішно оновлено',
+                    type: 'success',
+                });
+            }
+        })
+        .catch((err) =>
+            setSnack({
+                open: true,
+                message: `На сервері сталась помилка - ${err}`,
+                type: 'error',
+            }),
+        );
+}
+export function FilterByPriority(filter, filteredArr, setDataSource): void {
+    switch (filter) {
+        case 0:
+            setDataSource(filteredArr);
+            break;
+        case 1:
+            setDataSource(filteredArr.filter((item: any) => item.priority === filter));
+            break;
+        case 2:
+            setDataSource(filteredArr.filter((item: any) => item.priority === filter));
+            break;
+        case 3:
+            setDataSource(filteredArr.filter((item: any) => item.priority === filter));
+            break;
+        case 4:
+            setDataSource(filteredArr.filter((item: any) => item.priority === filter));
+            break;
+        default:
+            setDataSource(filteredArr);
+    }
+}
+export function FilterByStatus(filter, filteredArr, setDataSource): void {
+    switch (filter) {
+        case 'all':
+            setDataSource(filteredArr);
+            break;
+        case 'open':
+            setDataSource(filteredArr.filter((item: any) => item.status === filter));
+            break;
+        case 'fixing':
+            setDataSource(filteredArr.filter((item: any) => item.status === filter));
+            break;
+        case 'solved':
+            setDataSource(filteredArr.filter((item: any) => item.status === filter));
+            break;
+        default:
+            setDataSource(filteredArr);
+    }
 }

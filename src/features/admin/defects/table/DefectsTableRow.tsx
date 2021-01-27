@@ -1,8 +1,6 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { TableCell, TableRow, Button, Tooltip } from '@material-ui/core';
-import { Alert } from '@material-ui/lab';
 import { Edit, Delete, Description, CheckCircle } from '@material-ui/icons';
-import Avatar from '@material-ui/core/Avatar';
 
 import styles from './DefectsTable.module.css';
 import { Defect } from '../models/DefectsModels';
@@ -10,16 +8,14 @@ import DeleteDialog from '../DeleteDialog/DeleteDialog';
 import InfoDialog from '../InfoDialog/InfoDialog';
 import UpdateDialog from '../UpdateDialog/UpdateDialog';
 import Status from './Status';
-import DefectsContext from '../DefectsContext';
 
-function DefectsTableRow({ defect, index }): JSX.Element {
-    const { setStatus } = useContext(DefectsContext);
+function DefectsTableRow({ defect, index, setStatus }): JSX.Element {
     const [update, setUpdate] = React.useState(false);
     const [info, setInfo] = React.useState(false);
     const [del, setDel] = React.useState(false);
 
     const checkHandler = () => {
-        setStatus({ status: true, body: { ...defect }, value: 'solved' });
+        setStatus({ status: true, data: { ...defect }, value: 'solved' });
     };
 
     const openModal = (mode) => {

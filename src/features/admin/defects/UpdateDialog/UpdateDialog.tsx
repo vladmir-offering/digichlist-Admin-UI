@@ -3,12 +3,7 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
-import Grid from '@material-ui/core/Grid';
-import {
-    MuiPickersUtilsProvider,
-    KeyboardTimePicker,
-    KeyboardDatePicker,
-} from '@material-ui/pickers';
+import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import {
     Dialog,
     DialogTitle,
@@ -16,6 +11,10 @@ import {
     DialogActions,
     TextField,
     Button,
+    FormControl,
+    InputLabel,
+    MenuItem,
+    Select,
 } from '@material-ui/core';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -36,21 +35,20 @@ const useStyles = makeStyles({
 
 function UpdateDialog({ open, setOpen, defect }): JSX.Element {
     const { setUpdated } = useContext(DefectsContext);
-    const [selectedDate, setSelectedDate] = React.useState<Date | null>(
-        new Date('2014-08-18T21:11:54'),
-    );
     const classes = useStyles();
 
     const intialFormValues = {
         title: defect.title,
         room: defect.room,
         status: defect.status,
-        open_date: defect.open_date.substr(0, 10),
+        priority: defect.priority,
+        open_date: defect.open_date,
     };
     const editValidationSchema = Yup.object().shape({
         title: Yup.string().min(5, 'Надто короткий опис').max(50, 'Надто довгий опис'),
         room: Yup.string().min(3, 'Надто коротка назва').max(50, 'Надто довга назва'),
         status: Yup.string(),
+        priority: Yup.number(),
         open_date: Yup.date(),
     });
 
@@ -66,9 +64,6 @@ function UpdateDialog({ open, setOpen, defect }): JSX.Element {
                 intialFormValues: { ...intialFormValues },
             },
         });
-    };
-    const handleDateChange = (date: Date | null) => {
-        setSelectedDate(date);
     };
     return (
         <React.Fragment>
@@ -86,6 +81,7 @@ function UpdateDialog({ open, setOpen, defect }): JSX.Element {
                         handleChange,
                         handleBlur,
                         handleSubmit,
+                        setFieldValue,
                     }) => (
                         <form className={styles.form} onSubmit={handleSubmit}>
                             <DialogContent className={classes.DialogContent}>
@@ -112,55 +108,53 @@ function UpdateDialog({ open, setOpen, defect }): JSX.Element {
                                     helperText={touched.room ? errors.room : ''}
                                     error={touched.room && Boolean(errors.room)}
                                 />
-                                <TextField
-                                    fullWidth
-                                    id='status'
-                                    margin='dense'
-                                    label='Cтатус'
-                                    name='status'
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    value={values.status}
-                                    helperText={touched.status ? errors.status : ''}
-                                    error={touched.status && Boolean(errors.status)}
-                                />
+                                <FormControl fullWidth margin='dense'>
+                                    <InputLabel id='status-label'>Cтатус</InputLabel>
+                                    <Select
+                                        labelId='status-label'
+                                        id='status'
+                                        name='status'
+                                        value={values.status}
+                                        onBlur={handleBlur}
+                                        onChange={handleChange}>
+                                        <MenuItem value={'open'}>Відкритий</MenuItem>
+                                        <MenuItem value={'fixing'}>В процесі</MenuItem>
+                                        <MenuItem value={'solved'}>Закритий</MenuItem>
+                                    </Select>
+                                </FormControl>
+                                {errors.status && touched.status ? (
+                                    <div>{errors.status}</div>
+                                ) : null}
+                                <FormControl fullWidth margin='dense'>
+                                    <InputLabel id='status-label'>Пріоритет</InputLabel>
+                                    <Select
+                                        labelId='status-label'
+                                        id='priority'
+                                        name='priority'
+                                        value={values.priority}
+                                        onBlur={handleBlur}
+                                        onChange={handleChange}>
+                                        <MenuItem value={1}>Терміновий</MenuItem>
+                                        <MenuItem value={2}>Якнайшвидше</MenuItem>
+                                        <MenuItem value={3}>Звичайний</MenuItem>
+                                        <MenuItem value={4}>Відустній</MenuItem>
+                                    </Select>
+                                </FormControl>
+                                {errors.status && touched.status ? (
+                                    <div>{errors.status}</div>
+                                ) : null}
                                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                    <Grid container justify='space-around'>
-                                        <KeyboardDatePicker
-                                            disableToolbar
-                                            variant='inline'
-                                            format='yyyy-MM-dd'
-                                            margin='normal'
-                                            id='date-picker-inline'
-                                            label='Date picker inline'
-                                            value={values.open_date}
-                                            onChange={handleDateChange}
-                                            KeyboardButtonProps={{
-                                                'aria-label': 'change date',
-                                            }}
-                                        />
-                                        <KeyboardDatePicker
-                                            margin='normal'
-                                            id='date-picker-dialog'
-                                            label='Date picker dialog'
-                                            format='yyyy-MM-dd'
-                                            value={selectedDate}
-                                            onChange={handleDateChange}
-                                            KeyboardButtonProps={{
-                                                'aria-label': 'change date',
-                                            }}
-                                        />
-                                        <KeyboardTimePicker
-                                            margin='normal'
-                                            id='time-picker'
-                                            label='Time picker'
-                                            value={selectedDate}
-                                            onChange={handleDateChange}
-                                            KeyboardButtonProps={{
-                                                'aria-label': 'change time',
-                                            }}
-                                        />
-                                    </Grid>
+                                    <KeyboardDatePicker
+                                        disableToolbar
+                                        variant='inline'
+                                        format='yyyy-MM-dd'
+                                        margin='normal'
+                                        id='date-picker-inline'
+                                        label='Дата появи'
+                                        name='open_date'
+                                        value={values.open_date}
+                                        onChange={(date) => setFieldValue('open_date', date)}
+                                    />
                                 </MuiPickersUtilsProvider>
                                 {errors.open_date && touched.open_date ? (
                                     <div>{errors.open_date}</div>

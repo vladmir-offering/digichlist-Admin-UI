@@ -28,10 +28,13 @@ interface Columns {
     minWidth?: string;
     align?: TableCellProps['align'];
 }
-interface Filter {
+interface StatusFilter {
     title: string;
     value: string;
-    style: any;
+}
+interface PriorityFilter {
+    title: string;
+    value: number;
 }
 export const columns: Array<Columns> = [
     { id: 'id', label: '№', minWidth: '10%' },
@@ -55,17 +58,16 @@ export const columns: Array<Columns> = [
     },
 ];
 
-export const filters: Array<Filter> = [
-    { title: 'Всі дефекти', value: 'all', style: { backgroundColor: '#2196f3', color: 'white' } },
-    {
-        title: 'Відкриті дефекти',
-        value: 'open',
-        style: { backgroundColor: '#4caf50', color: 'white' },
-    },
-    {
-        title: 'Дефекти в процесі',
-        value: 'fixing',
-        style: { backgroundColor: '#ff9800', color: 'white' },
-    },
-    { title: 'Закриті дефекти', value: 'solved', style: { backgroundColor: '##2196f3' } },
+export const statuses: Array<StatusFilter> = [
+    { title: 'Фільтр відсутній', value: 'all' },
+    { title: 'Відкриті дефекти', value: 'open' },
+    { title: 'Дефекти в процесі', value: 'fixing' },
+    { title: 'Закриті дефекти', value: 'solved' },
+];
+export const priorities: Array<PriorityFilter> = [
+    { title: 'Фільтр відсутній', value: 0 },
+    { title: 'Терміново', value: 1 },
+    { title: 'Якнайшвидше', value: 2 },
+    { title: 'Звичайне завдання', value: 3 },
+    { title: 'Пріоритет відсутній', value: 4 },
 ];

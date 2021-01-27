@@ -46,4 +46,8 @@
 
 .formControl{
   min-width: 200px !important;
+  margin-right: 1rem !important;
+}
+.formGroup{
+  align-items:center;
 }

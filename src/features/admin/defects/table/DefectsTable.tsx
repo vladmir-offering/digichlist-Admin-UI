@@ -13,18 +13,25 @@ import {
     Select,
     InputLabel,
     FormControl,
-    Chip,
+    FormGroup,
 } from '@material-ui/core';
 import { v4 as uuidv4 } from 'uuid';
 import { NotificationImportant } from '@material-ui/icons';
 
-import { getDefects, deleteModeSubmit, updateModeSubmit, checkModeSumbit } from '../DefectsService';
-import DefectsTableRow from './DefectsTableRow';
-import styles from './DefectsTable.module.css';
-import { columns, filters } from '../models/DefectsModels';
 import SnackbarHandler from '../../../../common/components/Snackbar/snackbar';
 import Loader from '../../../../common/components/Loader/Loader';
+import DefectsTableRow from './DefectsTableRow';
 
+import {
+    getDefects,
+    deleteModeSubmit,
+    updateModeSubmit,
+    checkModeSumbit,
+    FilterByStatus,
+    FilterByPriority,
+} from '../DefectsService';
+import styles from './DefectsTable.module.css';
+import { columns, statuses, priorities } from '../models/DefectsModels';
 import DefectsContext from '../DefectsContext';
 
 function DefectsTable(): JSX.Element {
@@ -39,8 +46,9 @@ function DefectsTable(): JSX.Element {
 
     const [deleted, setDeleted] = React.useState({ status: false, id: '' });
     const [updated, setUpdated] = React.useState({ status: false, data: {} });
-    const [status, setStatus] = React.useState({ status: false, body: {}, value: 'none' });
-    const [filter, setFilter] = React.useState(filters[0].value);
+    const [status, setStatus] = React.useState({ status: false, data: {}, value: 'none' });
+    const [StatusFilter, setStatusFilter] = React.useState(statuses[0].value);
+    const [PriorityFilter, setPriorityFilter] = React.useState(priorities[0].value);
 
     const closeModal = (): void => {
         setOpen(false);
@@ -68,27 +76,18 @@ function DefectsTable(): JSX.Element {
 
     useEffect(() => {
         if (status.status) {
-            checkModeSumbit(status.body, status.value, setSnack, setDataSource);
+            checkModeSumbit(status.data, status.value, setSnack, setDataSource);
         }
     }, [status]);
+
+    //Filters
     useEffect(() => {
-        switch (filter) {
-            case 'all':
-                setDataSource(FilteredDataSource);
-                break;
-            case 'open':
-                setDataSource(FilteredDataSource.filter((item: any) => item.status === filter));
-                break;
-            case 'fixing':
-                setDataSource(FilteredDataSource.filter((item: any) => item.status === filter));
-                break;
-            case 'solved':
-                setDataSource(FilteredDataSource.filter((item: any) => item.status === filter));
-                break;
-            default:
-                setDataSource(FilteredDataSource);
-        }
-    }, [filter]);
+        FilterByStatus(StatusFilter, FilteredDataSource, setDataSource);
+    }, [StatusFilter]);
+    useEffect(() => {
+        FilterByPriority(PriorityFilter, FilteredDataSource, setDataSource);
+    }, [PriorityFilter]);
+    //
 
     const handleChangePage = (event, newPage): void => {
         setPage(newPage);
@@ -98,10 +97,13 @@ function DefectsTable(): JSX.Element {
         setPage(0);
     };
     const handleChangeStatusFilter = (event) => {
-        setFilter(event.target.value);
+        setStatusFilter(event.target.value);
+    };
+    const handleChangePriorityFilter = (event) => {
+        setPriorityFilter(event.target.value);
     };
     return (
-        <DefectsContext.Provider value={{ setDeleted, setUpdated, setStatus }}>
+        <DefectsContext.Provider value={{ setDeleted, setUpdated }}>
             {loaded ? (
                 <React.Fragment>
                     <div className={styles.entityHeader}>
@@ -113,20 +115,38 @@ function DefectsTable(): JSX.Element {
                             <NotificationImportant fontSize='large' />
                             Список дефектів
                         </Typography>
-                        <FormControl className={styles.formControl}>
-                            <InputLabel id='status-filter'>Фільтри по статусу</InputLabel>
-                            <Select
-                                labelId='status-filter'
-                                id='status-filter-select'
-                                value={filter}
-                                onChange={handleChangeStatusFilter}>
-                                {filters.map((filter) => (
-                                    <MenuItem key={filter.value} value={filter.value}>
-                                        <Chip style={filter.style} label={filter.title} />
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
+                        <FormGroup row className={styles.formGroup}>
+                            <Typography>Виберіть один із фільтрів</Typography>
+                            <span style={{ width: '1px', margin: '0 1rem' }} />
+                            <FormControl className={styles.formControl}>
+                                <InputLabel id='status-filter'>Фільтри по статусу</InputLabel>
+                                <Select
+                                    labelId='status-filter'
+                                    id='status-filter-select'
+                                    value={StatusFilter}
+                                    onChange={handleChangeStatusFilter}>
+                                    {statuses.map((filter) => (
+                                        <MenuItem key={filter.value} value={filter.value}>
+                                            {filter.title}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                            <FormControl className={styles.formControl}>
+                                <InputLabel id='status-filter'>Фільтри по пріоритету</InputLabel>
+                                <Select
+                                    labelId='status-filter'
+                                    id='status-filter-select'
+                                    value={PriorityFilter}
+                                    onChange={handleChangePriorityFilter}>
+                                    {priorities.map((filter) => (
+                                        <MenuItem key={filter.value} value={filter.value}>
+                                            {filter.title}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                        </FormGroup>
                     </div>
                     <Paper elevation={6}>
                         <TableContainer className={styles.entityTableContainer}>
@@ -152,6 +172,7 @@ function DefectsTable(): JSX.Element {
                                                     key={uuidv4()}
                                                     index={index + 1}
                                                     defect={defect}
+                                                    setStatus={setStatus}
                                                 />
                                             );
                                         })}
