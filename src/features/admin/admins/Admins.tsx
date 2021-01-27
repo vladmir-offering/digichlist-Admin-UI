@@ -17,7 +17,7 @@ import { getAdmins, addAdminData, deleteAdminData, updateAdminData } from './Adm
 import AdminRow from './AdminRow';
 import AdminAddDialog from './AdminAddDialog';
 
-import SnackbarHandler from '../../../../common/components/Snackbar/snackbar';
+import SnackbarHandler from '../../../common/components/Snackbar/snackbar';
 
 export const Admins = () => {
     type Admin = Array<{
@@ -49,7 +49,7 @@ export const Admins = () => {
         delete: false,
         id: 0,
     });
-    const [snack, setSnack] = useState({ open: false, message: '', type: 'success' });
+    const [snack, setSnack] = useState({ open: false, message: '', type: '' });
     useEffect(() => {
         (async function () {
             const response = await getAdmins();
