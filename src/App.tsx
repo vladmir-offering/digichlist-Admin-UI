@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Login from './features/login';
-import AdminPanel from './features/login/admin/AdminPanel';
+import AdminPanel from './features/admin/AdminPanel';
 import LoginRoute from './common/guards/LoginRoute';
 import { isLogged } from './common/utils/api';
 

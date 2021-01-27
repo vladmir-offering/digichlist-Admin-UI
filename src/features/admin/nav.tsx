@@ -1,14 +1,5 @@
 import React from 'react';
-import {
-    AccountBalance,
-    CollectionsBookmark,
-    Dashboard,
-    Dns,
-    Group,
-    InsertChartSharp,
-    SupervisedUserCircle,
-    List,
-} from '@material-ui/icons';
+import { Dashboard, Group, InsertChartSharp, SupervisedUserCircle } from '@material-ui/icons';
 
 export const navList: any = [
     {

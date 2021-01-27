@@ -16,7 +16,7 @@ import { getAdmins, addAdminData, deleteAdminData, updateAdminData } from './Adm
 import AdminRow from './AdminRow';
 import AdminAddDialog from './AdminAddDialog';
 
-import SnackbarHandler from '../../../../common/components/Snackbar/snackbar';
+import SnackbarHandler from '../../../common/components/Snackbar/snackbar';
 
 export const Admins = () => {
     type Admin = Array<{

@@ -17,7 +17,7 @@ import Button from '@material-ui/core/Button';
 import { MainListItems } from './AdminNavItem';
 import Admins from './admins';
 import { navList } from './nav';
-import { logOut } from '../../../common/utils/api';
+import { logOut } from '../../common/utils/api';
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
