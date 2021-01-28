@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dashboard, Group, InsertChartSharp, SupervisedUserCircle } from '@material-ui/icons';
+import { Dashboard, Group, List, InsertChartSharp, SupervisedUserCircle } from '@material-ui/icons';
 
 export const navList: any = [
     {
@@ -21,5 +21,10 @@ export const navList: any = [
         path: '/admin/defects',
         icon: <InsertChartSharp />,
         title: 'Дефекти',
+    },
+    {
+        path: '/admin/orders',
+        icon: <List />,
+        title: 'Замовлення',
     },
 ];
