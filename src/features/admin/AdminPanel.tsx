@@ -1,24 +1,19 @@
 import React from 'react';
-import { Link, Route, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
 import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
+
 import MenuIcon from '@material-ui/icons/Menu';
 import CloseIcon from '@material-ui/icons/Close';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import { NavLink } from 'react-router-dom';
-import { v4 as uuidv4 } from 'uuid';
 
-// import VisibleItemList from '../containers/VisibleItemList';
 import { MainListItems } from './AdminNavItem';
 import Admins from './admins';
 import DefectsTable from './defects/index';
@@ -73,7 +68,6 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 const AdminPanel = ({ setAuthInfo }): JSX.Element => {
-    const dummyCategories = ['Адміни', 'Дефекти', 'Користувачі', 'Репорт'];
     const classes = useStyles();
     const theme = useTheme();
     const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -116,7 +110,6 @@ const AdminPanel = ({ setAuthInfo }): JSX.Element => {
             </AppBar>
 
             <nav className={classes.drawer}>
-                {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
                 <Hidden smUp implementation='css'>
                     <Drawer
                         variant='temporary'
@@ -127,7 +120,7 @@ const AdminPanel = ({ setAuthInfo }): JSX.Element => {
                             paper: classes.drawerPaper,
                         }}
                         ModalProps={{
-                            keepMounted: true, // Better open performance on mobile.
+                            keepMounted: true,
                         }}>
                         <IconButton
                             onClick={handleDrawerToggle}
