@@ -5,7 +5,7 @@ import LoginRoute from './common/guards/LoginRoute';
 import { isLogged } from './common/utils/api';
 
 import ProtectedRoute from './common/guards/ProtectedRoute';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from '../node_modules/react-router-dom';
 import './App.css';
 
 function App(): JSX.Element {

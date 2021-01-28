@@ -7,6 +7,7 @@ import { Button } from '@material-ui/core';
 
 import ConfirmDelete from './ConfirmDelete';
 import AdminAddDialog from './AdminAddDialog';
+import styles from './Admins.module.css';
 
 const AdminRow = ({ adminData, id, setDeleteAdmin, setEditAdmin }) => {
     const { username, email, _id } = adminData;
@@ -22,15 +23,23 @@ const AdminRow = ({ adminData, id, setDeleteAdmin, setEditAdmin }) => {
     };
     return (
         <TableRow>
-            <TableCell>{id}</TableCell>
+            <TableCell>{id + 1}</TableCell>
             <TableCell>{username}</TableCell>
             <TableCell>{email}</TableCell>
             <TableCell>
                 <div>
-                    <Button color='primary' onClick={dialogOpenHandler}>
+                    <Button
+                        color='primary'
+                        variant='contained'
+                        className={styles.button}
+                        onClick={dialogOpenHandler}>
                         <EditIcon />
                     </Button>
-                    <Button color='primary' onClick={dialogOpenDelHandler}>
+                    <Button
+                        color='primary'
+                        variant='contained'
+                        className={styles.button}
+                        onClick={dialogOpenDelHandler}>
                         <DeleteIcon />
                     </Button>
                 </div>

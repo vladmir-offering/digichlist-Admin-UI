@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect, Route } from 'react-router-dom';
+import { Redirect, Route } from '../../../node_modules/react-router-dom';
 const LoginRoute = ({ component: Component, path, authInfo, setAuthInfo }): JSX.Element => {
     return (
         <Route
