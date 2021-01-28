@@ -5,9 +5,7 @@ import { logOut } from './api';
 export const telegramApiAxios = axios.create({});
 telegramApiAxios.interceptors.request.use((config) => {
     const token = sessionStorage.getItem('secret-auth-token');
-    console.log(token);
     if (token) {
-        console.log('sdf');
         config.headers.Authorization = token;
     }
     return config;

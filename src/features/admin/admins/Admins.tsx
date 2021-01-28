@@ -10,14 +10,13 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import AddCircle from '@material-ui/icons/AddCircle';
-import SearchIcon from '@material-ui/icons/Search';
 
 import styles from './Admins.module.css';
 import { getAdmins, addAdminData, deleteAdminData, updateAdminData } from './AdminsServise';
 import AdminRow from './AdminRow';
 import AdminAddDialog from './AdminAddDialog';
 
-import SnackbarHandler from '../../../../common/components/Snackbar/snackbar';
+import SnackbarHandler from '../../../common/components/Snackbar/snackbar';
 
 export const Admins = () => {
     type Admin = Array<{
@@ -75,7 +74,6 @@ export const Admins = () => {
         (async function () {
             if (addAdmin.add) {
                 const response = await addAdminData(addAdmin.data);
-                console.log(response);
                 if (!response.err) {
                     setAdminsData([...adminsData, response]);
                     setOpen(false);
@@ -123,7 +121,6 @@ export const Admins = () => {
 
     useEffect(() => {
         (async function () {
-            console.log(editAdmin);
             if (!editAdmin.isChanged && editAdmin.edit) {
                 setSnack({
                     open: true,
@@ -133,7 +130,6 @@ export const Admins = () => {
             } else {
                 if (editAdmin.edit) {
                     const response = await updateAdminData(adminsData, editAdmin);
-                    console.log(response);
                     if (Array.isArray(response)) {
                         setAdminsData(response);
                         setOpen(false);
