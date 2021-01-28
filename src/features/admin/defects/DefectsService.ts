@@ -111,7 +111,7 @@ export function checkModeSumbit(data, admin_username, statusValue, setSnack, set
                 );
                 setSnack({
                     open: true,
-                    message: 'Дефект успішно оновлено',
+                    message: 'Дефект виправлено',
                     type: 'success',
                 });
             }
