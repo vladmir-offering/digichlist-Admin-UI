@@ -16,6 +16,7 @@ import Button from '@material-ui/core/Button';
 
 import { MainListItems } from './AdminNavItem';
 import Admins from './admins';
+import DefectsTable from './defects/index';
 import { navList } from './nav';
 import { logOut } from '../../common/utils/api';
 
@@ -145,6 +146,7 @@ const AdminPanel = ({ setAuthInfo }): JSX.Element => {
                 <div className={classes.toolbar} />
                 <Switch>
                     <Route path='/admin/admins' component={Admins} />
+                    <Route path='/admin/defects' component={DefectsTable} />
                 </Switch>
             </div>
         </div>

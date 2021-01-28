@@ -17,6 +17,7 @@ import AdminRow from './AdminRow';
 import AdminAddDialog from './AdminAddDialog';
 
 import SnackbarHandler from '../../../common/components/Snackbar/snackbar';
+import { Paper } from '@material-ui/core';
 
 export const Admins = () => {
     type Admin = Array<{
@@ -48,7 +49,7 @@ export const Admins = () => {
         delete: false,
         id: 0,
     });
-    const [snack, setSnack] = useState({ open: false, message: '', type: 'success' });
+    const [snack, setSnack] = useState({ open: false, message: '', type: '' });
     useEffect(() => {
         (async function () {
             const response = await getAdmins();
@@ -189,7 +190,7 @@ export const Admins = () => {
                     {'Додати адміна'}
                 </Button>
             </div>
-            <div style={{ boxShadow: '0.5rem 1rem 2rem gray' }}>
+            <Paper elevation={6}>
                 <Table stickyHeader aria-label='sticky table'>
                     <TableHead>
                         <TableRow>
@@ -221,7 +222,7 @@ export const Admins = () => {
                     onChangePage={handleChangePage}
                     onChangeRowsPerPage={handleChangeRowsPerPage}
                 />
-            </div>
+            </Paper>
             <SnackbarHandler snack={snack} setSnack={setSnack} />
             <AdminAddDialog
                 open={open}
