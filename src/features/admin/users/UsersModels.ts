@@ -20,13 +20,13 @@ interface Columns {
     minWidth?: string;
     align?: TableCellProps['align'];
 }
-interface StatusFilter {
+interface AccessFilter {
     title: string;
     value: string;
 }
-interface PriorityFilter {
+interface PositionFilter {
     title: string;
-    value: number;
+    value: string;
 }
 export const columns: Array<Columns> = [
     { id: 'id', label: '№', minWidth: '10%' },
@@ -43,7 +43,7 @@ export const columns: Array<Columns> = [
     },
     {
         id: 'enabled',
-        label: 'Статус',
+        label: 'Доступ',
         minWidth: '15%',
         align: 'center',
     },
@@ -55,16 +55,14 @@ export const columns: Array<Columns> = [
     },
 ];
 
-export const statuses: Array<StatusFilter> = [
-    { title: 'Фільтр відсутній', value: 'all' },
-    { title: 'Відкриті дефекти', value: 'open' },
-    { title: 'Дефекти в процесі', value: 'fixing' },
-    { title: 'Закриті дефекти', value: 'solved' },
+export const accesses: Array<AccessFilter> = [
+    { title: 'Фільтр відсутній', value: 'No filter' },
+    { title: 'Неактивований', value: 'false' },
+    { title: 'Активований', value: 'true' },
 ];
-export const priorities: Array<PriorityFilter> = [
-    { title: 'Фільтр відсутній', value: 0 },
-    { title: 'Терміново', value: 1 },
-    { title: 'Якнайшвидше', value: 2 },
-    { title: 'Звичайне завдання', value: 3 },
-    { title: 'Пріоритет відсутній', value: 4 },
+export const positions: Array<PositionFilter> = [
+    { title: 'Фільтр відсутній', value: 'No filter' },
+    { title: 'Посада відсутня', value: 'None' },
+    { title: 'Санітарний працівник', value: 'Cleaner' },
+    { title: 'Технічний працівник', value: 'Repairer' },
 ];

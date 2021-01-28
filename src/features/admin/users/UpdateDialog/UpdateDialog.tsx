@@ -1,9 +1,6 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import 'date-fns';
-import DateFnsUtils from '@date-io/date-fns';
-import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import {
     Dialog,
     DialogTitle,
@@ -18,9 +15,7 @@ import {
 } from '@material-ui/core';
 
 import { makeStyles } from '@material-ui/core/styles';
-
 import styles from './UpdateDialog.module.css';
-import DefectsContext from '../UsersContext';
 
 const useStyles = makeStyles({
     DialogContent: {
@@ -33,23 +28,20 @@ const useStyles = makeStyles({
     },
 });
 
-function UpdateDialog({ open, setOpen, defect }): JSX.Element {
-    const { setUpdated } = useContext(DefectsContext);
+function UpdateDialog({ open, setOpen, setUpdated, user }): JSX.Element {
     const classes = useStyles();
 
     const intialFormValues = {
-        title: defect.title,
-        room: defect.room,
-        status: defect.status,
-        priority: defect.priority,
-        open_date: defect.open_date,
+        first_name: user.first_name,
+        last_name: user.last_name === '' ? 'Прізвище відсутнє' : user.last_name,
+        enabled: user.enabled,
+        position: user.position,
     };
     const editValidationSchema = Yup.object().shape({
-        title: Yup.string().min(5, 'Надто короткий опис').max(50, 'Надто довгий опис'),
-        room: Yup.string().min(3, 'Надто коротка назва').max(50, 'Надто довга назва'),
-        status: Yup.string(),
-        priority: Yup.number(),
-        open_date: Yup.date(),
+        first_name: Yup.string().min(5, "Надто коротке ім'я").max(50, "Надто довге ім'я"),
+        last_name: Yup.string().min(5, 'Надто коротка назва').max(50, 'Надто довга назва'),
+        enabled: Yup.string(),
+        position: Yup.string(),
     });
 
     const closeModal = () => {
@@ -59,8 +51,8 @@ function UpdateDialog({ open, setOpen, defect }): JSX.Element {
         setUpdated({
             status: true,
             data: {
-                id: defect._id,
-                values: { ...values },
+                id: user._id,
+                values: { username: user.username, chat_id: user.chat_id, ...values },
                 intialFormValues: { ...intialFormValues },
             },
         });
@@ -81,7 +73,6 @@ function UpdateDialog({ open, setOpen, defect }): JSX.Element {
                         handleChange,
                         handleBlur,
                         handleSubmit,
-                        setFieldValue,
                     }) => (
                         <form className={styles.form} onSubmit={handleSubmit}>
                             <DialogContent className={classes.DialogContent}>
@@ -89,75 +80,58 @@ function UpdateDialog({ open, setOpen, defect }): JSX.Element {
                                     autoFocus
                                     margin='dense'
                                     id='title'
-                                    label='Опис'
+                                    name='first_name'
+                                    label="Ім'я"
                                     fullWidth
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                    value={values.title}
-                                    helperText={touched.title ? errors.title : ''}
-                                    error={touched.title && Boolean(errors.title)}
+                                    value={values.first_name}
+                                    helperText={touched.first_name ? errors.first_name : ''}
+                                    error={touched.first_name && Boolean(errors.first_name)}
                                 />
                                 <TextField
                                     margin='dense'
-                                    id='room'
-                                    label='Місце дефекту'
+                                    id='last_name'
+                                    label='Прізвище'
                                     fullWidth
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                    value={values.room}
-                                    helperText={touched.room ? errors.room : ''}
-                                    error={touched.room && Boolean(errors.room)}
+                                    value={values.last_name}
+                                    helperText={touched.last_name ? errors.last_name : ''}
+                                    error={touched.last_name && Boolean(errors.last_name)}
                                 />
                                 <FormControl fullWidth margin='dense'>
-                                    <InputLabel id='status-label'>Cтатус</InputLabel>
+                                    <InputLabel id='status-label'>Доступ</InputLabel>
                                     <Select
-                                        labelId='status-label'
-                                        id='status'
-                                        name='status'
-                                        value={values.status}
+                                        labelId='enabled-label'
+                                        id='enabled'
+                                        name='enabled'
+                                        value={values.enabled}
                                         onBlur={handleBlur}
                                         onChange={handleChange}>
-                                        <MenuItem value={'open'}>Відкритий</MenuItem>
-                                        <MenuItem value={'fixing'}>В процесі</MenuItem>
-                                        <MenuItem value={'solved'}>Закритий</MenuItem>
+                                        <MenuItem value={'true'}>Активний</MenuItem>
+                                        <MenuItem value={'false'}>Неактивний</MenuItem>
                                     </Select>
                                 </FormControl>
-                                {errors.status && touched.status ? (
-                                    <div>{errors.status}</div>
+                                {errors.enabled && touched.enabled ? (
+                                    <div>{errors.enabled}</div>
                                 ) : null}
                                 <FormControl fullWidth margin='dense'>
-                                    <InputLabel id='status-label'>Пріоритет</InputLabel>
+                                    <InputLabel id='status-label'>Посада</InputLabel>
                                     <Select
-                                        labelId='status-label'
-                                        id='priority'
-                                        name='priority'
-                                        value={values.priority}
+                                        labelId='position-label'
+                                        id='position'
+                                        name='position'
+                                        value={values.position}
                                         onBlur={handleBlur}
                                         onChange={handleChange}>
-                                        <MenuItem value={1}>Терміновий</MenuItem>
-                                        <MenuItem value={2}>Якнайшвидше</MenuItem>
-                                        <MenuItem value={3}>Звичайний</MenuItem>
-                                        <MenuItem value={4}>Відустній</MenuItem>
+                                        <MenuItem value={'Cleaner'}>Санітарний працівник</MenuItem>
+                                        <MenuItem value={'Repairer'}>Технічний працівник</MenuItem>
+                                        <MenuItem value={'None'}>Посада відсутня</MenuItem>
                                     </Select>
                                 </FormControl>
-                                {errors.status && touched.status ? (
-                                    <div>{errors.status}</div>
-                                ) : null}
-                                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                    <KeyboardDatePicker
-                                        disableToolbar
-                                        variant='inline'
-                                        format='yyyy-MM-dd'
-                                        margin='normal'
-                                        id='date-picker-inline'
-                                        label='Дата появи'
-                                        name='open_date'
-                                        value={values.open_date}
-                                        onChange={(date) => setFieldValue('open_date', date)}
-                                    />
-                                </MuiPickersUtilsProvider>
-                                {errors.open_date && touched.open_date ? (
-                                    <div>{errors.open_date}</div>
+                                {errors.position && touched.position ? (
+                                    <div>{errors.position}</div>
                                 ) : null}
                             </DialogContent>
                             <DialogActions className={classes.DialogActions}>

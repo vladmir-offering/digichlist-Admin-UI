@@ -1,29 +1,24 @@
 import React from 'react';
 import { TableCell, TableRow, Button, Tooltip } from '@material-ui/core';
-import { Edit, Delete, Description, CheckCircle } from '@material-ui/icons';
+import { Edit, Delete, CheckCircle } from '@material-ui/icons';
 
 import styles from './UsersTable.module.css';
-import DeleteDialog from '../DeleteDialog/DeleteDialog';
-import InfoDialog from '../InfoDialog/InfoDialog';
+import DeleteDialog from '../../../../common/components/DeleteDialog/DeleteDialog';
 import UpdateDialog from '../UpdateDialog/UpdateDialog';
 import Status from '../../../../common/components/Status/Status';
 
-function DefectsTableRow({ user, index, setStatus }): JSX.Element {
+function DefectsTableRow({ user, index, setEnabled, setDeleted, setUpdated }): JSX.Element {
     const [update, setUpdate] = React.useState(false);
-    const [info, setInfo] = React.useState(false);
     const [del, setDel] = React.useState(false);
 
     const checkHandler = () => {
-        setStatus({ status: true, data: { ...user }, value: true });
+        setEnabled({ status: true, data: { ...user }, value: true });
     };
 
     const openModal = (mode) => {
         switch (mode) {
             case 'update':
                 setUpdate(true);
-                break;
-            case 'info':
-                setInfo(true);
                 break;
             case 'delete':
                 setDel(true);
@@ -72,9 +67,14 @@ function DefectsTableRow({ user, index, setStatus }): JSX.Element {
                     </Button>
                 </Tooltip>
             </TableCell>
-            {/* <UpdateDialog open={update} setOpen={setUpdate} user={user} />
-            <InfoDialog open={info} setOpen={setInfo} user={user} />
-            <DeleteDialog open={del} setOpen={setDel} id={user._id} /> */}
+            <UpdateDialog open={update} setOpen={setUpdate} setUpdated={setUpdated} user={user} />
+            <DeleteDialog
+                title='користувача'
+                open={del}
+                setOpen={setDel}
+                id={user._id}
+                setDeleted={setDeleted}
+            />
         </TableRow>
     );
 }

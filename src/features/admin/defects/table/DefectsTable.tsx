@@ -31,7 +31,7 @@ import {
     FilterByPriority,
 } from '../DefectsService';
 import styles from './DefectsTable.module.css';
-import { columns, statuses, priorities } from '../models/DefectsModels';
+import { columns, statuses, priorities } from '../DefectsModels';
 import DefectsContext from '../DefectsContext';
 import UserContext from '../../../login/UserContext';
 
@@ -84,10 +84,10 @@ function DefectsTable(): JSX.Element {
 
     //Filters
     useEffect(() => {
-        FilterByStatus(StatusFilter, FilteredDataSource, setDataSource);
+        FilterByStatus(StatusFilter, FilteredDataSource, setDataSource, setFilteredDataSource);
     }, [StatusFilter]);
     useEffect(() => {
-        FilterByPriority(PriorityFilter, FilteredDataSource, setDataSource);
+        FilterByPriority(PriorityFilter, FilteredDataSource, setDataSource, setFilteredDataSource);
     }, [PriorityFilter]);
     //
 

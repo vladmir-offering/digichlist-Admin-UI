@@ -3,7 +3,7 @@ import { TableCell, TableRow, Button, Tooltip } from '@material-ui/core';
 import { Edit, Delete, Description, CheckCircle } from '@material-ui/icons';
 
 import styles from './DefectsTable.module.css';
-import { Defect } from '../models/DefectsModels';
+import { Defect } from '../DefectsModels';
 import DeleteDialog from '../DeleteDialog/DeleteDialog';
 import InfoDialog from '../InfoDialog/InfoDialog';
 import UpdateDialog from '../UpdateDialog/UpdateDialog';

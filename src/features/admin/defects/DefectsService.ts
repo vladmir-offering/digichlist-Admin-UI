@@ -1,6 +1,6 @@
 import { telegramApiAxios } from '../../../common/utils/interceptor';
 import { environment } from '../../../environments/environment';
-import { GetDefects, Defect } from './models/DefectsModels';
+import { GetDefects, Defect } from './DefectsModels';
 
 export async function getDefects(): Promise<GetDefects> {
     return await telegramApiAxios.get(`${environment.BASEURL}defect/all`).then((res) => {
@@ -124,10 +124,13 @@ export function checkModeSumbit(data, admin_username, statusValue, setSnack, set
             }),
         );
 }
-export function FilterByPriority(filter, filteredArr, setDataSource): void {
+export function FilterByPriority(filter, filteredArr, setDataSource, setFilteredDataSource): void {
     switch (filter) {
         case 0:
-            setDataSource(filteredArr);
+            getDefects().then((res) => {
+                setDataSource(res.defects);
+                setFilteredDataSource(res.defects);
+            });
             break;
         case 1:
             setDataSource(filteredArr.filter((item: any) => item.priority === filter));
@@ -145,10 +148,13 @@ export function FilterByPriority(filter, filteredArr, setDataSource): void {
             setDataSource(filteredArr);
     }
 }
-export function FilterByStatus(filter, filteredArr, setDataSource): void {
+export function FilterByStatus(filter, filteredArr, setDataSource, setFilteredDataSource): void {
     switch (filter) {
         case 'all':
-            setDataSource(filteredArr);
+            getDefects().then((res) => {
+                setDataSource(res.defects);
+                setFilteredDataSource(res.defects);
+            });
             break;
         case 'open':
             setDataSource(filteredArr.filter((item: any) => item.status === filter));

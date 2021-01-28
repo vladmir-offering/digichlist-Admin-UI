@@ -1,12 +1,9 @@
 import React from 'react';
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@material-ui/core';
+import { Dialog, DialogTitle, DialogActions, Button } from '@material-ui/core';
 
 import styles from './DeleteDialog.module.css';
-import DefectsContext from '../UsersContext';
 
-function InfoDialog({ open, setOpen, id }): JSX.Element {
-    const { setDeleted } = React.useContext(DefectsContext);
-
+function InfoDialog({ open, setOpen, setDeleted, id, title }): JSX.Element {
     const closeModal = () => {
         setOpen(false);
     };
@@ -21,7 +18,7 @@ function InfoDialog({ open, setOpen, id }): JSX.Element {
     return (
         <React.Fragment>
             <Dialog open={open} onClose={closeModal} aria-labelledby='simple-dialog-title'>
-                <DialogTitle className={styles.entityTitle}>Видалити дефект?</DialogTitle>
+                <DialogTitle className={styles.entityTitle}>Видалити {title}?</DialogTitle>
                 <DialogActions className={styles.deleteModal}>
                     <Button onClick={closeModal} color='primary'>
                         Скасувати
