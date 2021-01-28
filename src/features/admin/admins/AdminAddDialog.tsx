@@ -4,7 +4,6 @@ import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { v4 as uuidv4 } from 'uuid';
 import { Formik } from 'formik';
 
 import * as Yup from 'yup';
@@ -20,14 +19,18 @@ const AdminAddDialog = ({ open, setOpen, admin, setEdit, setAddAdmin, setEditAdm
     const validationSchema = admin
         ? Yup.object({
               username: Yup.string()
+                  .matches(
+                      /^(?=[a-zA-Z0-9._]{6,20}$)(?!.*[_.]{2})[^_.].*[^_.]$/,
+                      `Введіть інше ім'я`,
+                  )
                   .required('Заповни поле')
                   .min(5, "Коротке ім'я")
-                  .max(50, "Задовге ім'я"),
+                  .max(20, "Задовге ім'я"),
               email: Yup.string().email('Введіть коректну пошту').required('Заповни поле'),
               password: Yup.string()
                   .min(8, 'Мінімум 8 символів')
                   .matches(
-                      new RegExp('((?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,30})'),
+                      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/,
                       'Невідповідний пароль',
                   ),
               confirmPassword: Yup.string().oneOf(
@@ -37,15 +40,19 @@ const AdminAddDialog = ({ open, setOpen, admin, setEdit, setAddAdmin, setEditAdm
           })
         : Yup.object({
               username: Yup.string()
+                  .matches(
+                      /^(?=[a-zA-Z0-9._]{6,20}$)(?!.*[_.]{2})[^_.].*[^_.]$/,
+                      "Введіть інше ім'я",
+                  )
                   .required('Заповни поле')
                   .min(5, "Коротке ім'я")
-                  .max(50, "Задовге ім'я"),
+                  .max(20, "Задовге ім'я"),
               email: Yup.string().email('Введіть коректну пошту').required('Заповни поле'),
               password: Yup.string()
                   .required('Заповни поле')
                   .min(8, 'Мінімум 8 символів')
                   .matches(
-                      new RegExp('((?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,30})'),
+                      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/,
                       'Невідповідний пароль',
                   ),
               confirmPassword: Yup.string().oneOf(
@@ -83,8 +90,6 @@ const AdminAddDialog = ({ open, setOpen, admin, setEdit, setAddAdmin, setEditAdm
                         validationSchema={validationSchema}
                         validateOnMount={true}
                         onSubmit={(data) => {
-                            console.log(data);
-                            console.log(data.password === '');
                             if (admin) {
                                 if (
                                     compareObj(
