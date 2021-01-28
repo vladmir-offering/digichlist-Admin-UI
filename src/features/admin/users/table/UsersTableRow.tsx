@@ -2,20 +2,19 @@ import React from 'react';
 import { TableCell, TableRow, Button, Tooltip } from '@material-ui/core';
 import { Edit, Delete, Description, CheckCircle } from '@material-ui/icons';
 
-import styles from './DefectsTable.module.css';
-import { Defect } from '../models/DefectsModels';
+import styles from './UsersTable.module.css';
 import DeleteDialog from '../DeleteDialog/DeleteDialog';
 import InfoDialog from '../InfoDialog/InfoDialog';
 import UpdateDialog from '../UpdateDialog/UpdateDialog';
 import Status from '../../../../common/components/Status/Status';
 
-function DefectsTableRow({ defect, index, setStatus }): JSX.Element {
+function DefectsTableRow({ user, index, setStatus }): JSX.Element {
     const [update, setUpdate] = React.useState(false);
     const [info, setInfo] = React.useState(false);
     const [del, setDel] = React.useState(false);
 
     const checkHandler = () => {
-        setStatus({ status: true, data: { ...defect }, value: 'solved' });
+        setStatus({ status: true, data: { ...user }, value: true });
     };
 
     const openModal = (mode) => {
@@ -35,23 +34,14 @@ function DefectsTableRow({ defect, index, setStatus }): JSX.Element {
     return (
         <TableRow hover role='checkbox' tabIndex={-1}>
             <TableCell>{index}</TableCell>
-            <TableCell>{defect.title}</TableCell>
-            <TableCell>{defect.room}</TableCell>
+            <TableCell>{user.first_name + ' ' + user.last_name}</TableCell>
+            <TableCell>{user.username}</TableCell>
+            <TableCell>{user.position}</TableCell>
             <TableCell align='center'>
-                <Status status={defect.status} />
+                <Status status={user.enabled} />
             </TableCell>
             <TableCell align='center'>
-                <Tooltip title='Детальніша інформація' arrow>
-                    <Button
-                        onClick={() => openModal('info')}
-                        disableElevation
-                        variant='contained'
-                        className={styles.button}
-                        color='primary'>
-                        <Description />
-                    </Button>
-                </Tooltip>
-                <Tooltip title='Позначити виконаним' arrow>
+                <Tooltip title='Активувати' arrow>
                     <Button
                         onClick={checkHandler}
                         disableElevation
@@ -82,9 +72,9 @@ function DefectsTableRow({ defect, index, setStatus }): JSX.Element {
                     </Button>
                 </Tooltip>
             </TableCell>
-            <UpdateDialog open={update} setOpen={setUpdate} defect={defect} />
-            <InfoDialog open={info} setOpen={setInfo} defect={defect} />
-            <DeleteDialog open={del} setOpen={setDel} id={defect._id} />
+            {/* <UpdateDialog open={update} setOpen={setUpdate} user={user} />
+            <InfoDialog open={info} setOpen={setInfo} user={user} />
+            <DeleteDialog open={del} setOpen={setDel} id={user._id} /> */}
         </TableRow>
     );
 }
