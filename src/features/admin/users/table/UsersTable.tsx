@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Table,
     TableBody,
@@ -16,28 +16,25 @@ import {
     FormGroup,
 } from '@material-ui/core';
 import { v4 as uuidv4 } from 'uuid';
-import { NotificationImportant } from '@material-ui/icons';
+import { Group } from '@material-ui/icons';
 
 import SnackbarHandler from '../../../../common/components/Snackbar/snackbar';
 import Loader from '../../../../common/components/Loader/Loader';
-import DefectsTableRow from './DefectsTableRow';
+import UsersTableRow from './UsersTableRow';
 
+import styles from './UsersTable.module.css';
 import {
-    getDefects,
+    getUsers,
     deleteModeSubmit,
     updateModeSubmit,
+    FilterByAccess,
+    FilterByPosition,
     checkModeSumbit,
-    FilterByStatus,
-    FilterByPriority,
-} from '../DefectsService';
-import styles from './DefectsTable.module.css';
-import { columns, statuses, priorities } from '../DefectsModels';
-import DefectsContext from '../DefectsContext';
-import UserContext from '../../../login/UserContext';
+} from '../UsersService';
+import { columns, accesses, positions } from '../UsersModels';
 
-function DefectsTable(): JSX.Element {
+function UsersTable(): JSX.Element {
     const [open, setOpen] = React.useState(false);
-    const [admin_username, setAdminUserName] = useState(localStorage.getItem('admin_username'));
     const [snack, setSnack] = useState({ open: false, message: '', type: '' });
     const [dataSource, setDataSource] = useState(Array);
     const [FilteredDataSource, setFilteredDataSource] = useState(Array);
@@ -48,22 +45,22 @@ function DefectsTable(): JSX.Element {
 
     const [deleted, setDeleted] = React.useState({ status: false, id: '' });
     const [updated, setUpdated] = React.useState({ status: false, data: {} });
-    const [status, setStatus] = React.useState({ status: false, data: {}, value: 'none' });
-    const [StatusFilter, setStatusFilter] = React.useState(statuses[0].value);
-    const [PriorityFilter, setPriorityFilter] = React.useState(priorities[0].value);
+    const [enabled, setEnabled] = React.useState({ status: false, data: {}, value: 'none' });
+    const [AccessFilter, setAccessFilter] = React.useState(accesses[0].value);
+    const [PositionFilter, setPositionFilter] = React.useState(positions[0].value);
 
     const closeModal = (): void => {
         setOpen(false);
     };
 
     useEffect(() => {
-        getDefects().then((res) => {
+        getUsers().then((res) => {
             setLoaded(true);
-            setDataSource(res.defects);
-            setFilteredDataSource(res.defects);
+            setDataSource(res.users);
+            setFilteredDataSource(res.users);
         });
     }, []);
-
+    //*Operations
     useEffect(() => {
         if (deleted.status) {
             deleteModeSubmit(deleted.id, setSnack, setDataSource, closeModal);
@@ -72,24 +69,23 @@ function DefectsTable(): JSX.Element {
 
     useEffect(() => {
         if (updated.status) {
-            updateModeSubmit(updated.data, admin_username, setSnack, setDataSource, closeModal);
+            updateModeSubmit(updated.data, setSnack, setDataSource, closeModal);
         }
     }, [updated]);
 
     useEffect(() => {
-        if (status.status) {
-            checkModeSumbit(status.data, admin_username, status.value, setSnack, setDataSource);
+        if (enabled.status) {
+            checkModeSumbit(enabled.data, enabled.value, setSnack, setDataSource);
         }
-    }, [status]);
+    }, [enabled]);
 
-    //Filters
+    //*Filters
     useEffect(() => {
-        FilterByStatus(StatusFilter, FilteredDataSource, setDataSource, setFilteredDataSource);
-    }, [StatusFilter]);
+        FilterByAccess(AccessFilter, FilteredDataSource, setDataSource, setFilteredDataSource);
+    }, [AccessFilter]);
     useEffect(() => {
-        FilterByPriority(PriorityFilter, FilteredDataSource, setDataSource, setFilteredDataSource);
-    }, [PriorityFilter]);
-    //
+        FilterByPosition(PositionFilter, FilteredDataSource, setDataSource, setFilteredDataSource);
+    }, [PositionFilter]);
 
     const handleChangePage = (event, newPage): void => {
         setPage(newPage);
@@ -98,14 +94,14 @@ function DefectsTable(): JSX.Element {
         setRowsPerPage(+event.target.value);
         setPage(0);
     };
-    const handleChangeStatusFilter = (event) => {
-        setStatusFilter(event.target.value);
+    const handleChangeAccessFilter = (event) => {
+        setAccessFilter(event.target.value);
     };
-    const handleChangePriorityFilter = (event) => {
-        setPriorityFilter(event.target.value);
+    const handleChangePostionFilter = (event) => {
+        setPositionFilter(event.target.value);
     };
     return (
-        <DefectsContext.Provider value={{ setDeleted, setUpdated }}>
+        <React.Fragment>
             {loaded ? (
                 <React.Fragment>
                     <div className={styles.entityHeader}>
@@ -114,8 +110,8 @@ function DefectsTable(): JSX.Element {
                             variant='h4'
                             color='textPrimary'
                             className={styles.entityHeaderTitle}>
-                            <NotificationImportant fontSize='large' />
-                            Список дефектів
+                            <Group fontSize='large' />
+                            Список користувачів
                         </Typography>
                         <FormGroup row className={styles.formGroup}>
                             <Typography style={{ color: 'rgba(111, 111, 111, 0.87)' }}>
@@ -123,13 +119,13 @@ function DefectsTable(): JSX.Element {
                             </Typography>
                             <span style={{ width: '1px', margin: '0 1rem' }} />
                             <FormControl className={styles.formControl}>
-                                <InputLabel id='status-filter'>Фільтри по статусу</InputLabel>
+                                <InputLabel id='access-filter'>Фільтр доступу</InputLabel>
                                 <Select
-                                    labelId='status-filter'
-                                    id='status-filter-select'
-                                    value={StatusFilter}
-                                    onChange={handleChangeStatusFilter}>
-                                    {statuses.map((filter) => (
+                                    labelId='access-filter'
+                                    id='access-filter-select'
+                                    value={AccessFilter}
+                                    onChange={handleChangeAccessFilter}>
+                                    {accesses.map((filter) => (
                                         <MenuItem key={filter.value} value={filter.value}>
                                             {filter.title}
                                         </MenuItem>
@@ -137,13 +133,13 @@ function DefectsTable(): JSX.Element {
                                 </Select>
                             </FormControl>
                             <FormControl className={styles.formControl}>
-                                <InputLabel id='status-filter'>Фільтри по пріоритету</InputLabel>
+                                <InputLabel id='position-filter'>Фільтри по посаді</InputLabel>
                                 <Select
-                                    labelId='status-filter'
-                                    id='status-filter-select'
-                                    value={PriorityFilter}
-                                    onChange={handleChangePriorityFilter}>
-                                    {priorities.map((filter) => (
+                                    labelId='position-filter'
+                                    id='position-filter-select'
+                                    value={PositionFilter}
+                                    onChange={handleChangePostionFilter}>
+                                    {positions.map((filter) => (
                                         <MenuItem key={filter.value} value={filter.value}>
                                             {filter.title}
                                         </MenuItem>
@@ -170,13 +166,15 @@ function DefectsTable(): JSX.Element {
                                 <TableBody>
                                     {dataSource
                                         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                        .map((defect, index) => {
+                                        .map((user, index) => {
                                             return (
-                                                <DefectsTableRow
+                                                <UsersTableRow
                                                     key={uuidv4()}
                                                     index={index + 1}
-                                                    defect={defect}
-                                                    setStatus={setStatus}
+                                                    user={user}
+                                                    setEnabled={setEnabled}
+                                                    setDeleted={setDeleted}
+                                                    setUpdated={setUpdated}
                                                 />
                                             );
                                         })}
@@ -199,8 +197,8 @@ function DefectsTable(): JSX.Element {
             ) : (
                 <Loader />
             )}
-        </DefectsContext.Provider>
+        </React.Fragment>
     );
 }
 
-export default DefectsTable;
+export default UsersTable;

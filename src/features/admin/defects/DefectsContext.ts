@@ -1,5 +1,5 @@
 import React from 'react';
-import { Defect } from './models/DefectsModels';
+import { Defect } from './DefectsModels';
 
 type DefectStatus = 'open' | 'fixing' | 'solved' | string;
 

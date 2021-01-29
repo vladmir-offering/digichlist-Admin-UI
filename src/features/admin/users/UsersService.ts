@@ -1,36 +1,34 @@
 import { telegramApiAxios } from '../../../common/utils/interceptor';
 import { environment } from '../../../environments/environment';
-import { GetDefects, Defect } from './DefectsModels';
+import { GetUsers, User } from './UsersModels';
 
-export async function getDefects(): Promise<GetDefects> {
-    return await telegramApiAxios.get(`${environment.BASEURL}defect/all`).then((res) => {
+export async function getUsers(): Promise<GetUsers> {
+    return await telegramApiAxios.get(`${environment.BASEURL}user/all`).then((res) => {
         return res.data;
     });
 }
-export async function editDefect(id: string | undefined, body: Defect): Promise<any> {
+export async function editUser(id: string | undefined, body: User): Promise<any> {
     return await telegramApiAxios
-        .patch(`${environment.BASEURL}defect/update/${id}`, body)
+        .patch(`${environment.BASEURL}user/update/${id}`, body)
         .then((res) => res.data);
 }
-export async function deleteDefect(id: string): Promise<GetDefects> {
+export async function deleteUser(id: string): Promise<GetUsers> {
     return await telegramApiAxios
-        .delete(`${environment.BASEURL}defect/delete/${id}`)
+        .delete(`${environment.BASEURL}user/delete/${id}`)
         .then((res) => res.data);
 }
 
 export function updateModeSubmit(
     data: any,
-    admin_username,
     setSnack: any,
     setDataSource: any,
     closeModal: any,
 ): void {
     if (
-        data.values.title === data.intialFormValues.title &&
-        data.values.room === data.intialFormValues.room &&
-        data.values.status === data.intialFormValues.status &&
-        data.values.open_date === data.intialFormValues.open_date &&
-        data.values.priority === data.intialFormValues.priority
+        data.values.first_name === data.intialFormValues.first_name &&
+        data.values.last_name === data.intialFormValues.last_name &&
+        data.values.enabled === data.intialFormValues.enabled &&
+        data.values.position === data.intialFormValues.position
     ) {
         setSnack({
             open: true,
@@ -38,12 +36,10 @@ export function updateModeSubmit(
             type: 'info',
         });
     } else {
-        const updatedData: Defect = {
+        const updatedData: User = {
             ...data.values,
-            open_date: new Date(data.values.open_date).toISOString().substr(0, 10),
-            admin_username,
         };
-        editDefect(data.id, updatedData)
+        editUser(data.id, updatedData)
             .then((res) => {
                 if (res.response === 'ok') {
                     setDataSource((prevVal) =>
@@ -54,7 +50,7 @@ export function updateModeSubmit(
                     closeModal();
                     setSnack({
                         open: true,
-                        message: 'Дефект успішно оновлено',
+                        message: 'Користувача успішно оновлено',
                         type: 'success',
                     });
                 }
@@ -74,14 +70,14 @@ export function deleteModeSubmit(
     setDataSource: any,
     closeModal: any,
 ): void {
-    deleteDefect(id)
+    deleteUser(id)
         .then((res) => {
             if (res.response === 'ok') {
                 setDataSource((prevVal) => prevVal.filter((tableDefect) => tableDefect._id !== id));
                 closeModal();
                 setSnack({
                     open: true,
-                    message: 'Дефект успішно видалено',
+                    message: 'Користувача успішно видалено',
                     type: 'success',
                 });
             }
@@ -94,24 +90,21 @@ export function deleteModeSubmit(
             }),
         );
 }
-export function checkModeSumbit(data, admin_username, statusValue, setSnack, setDataSource): void {
+export function checkModeSumbit(data, enabledValue, setSnack, setDataSource): void {
     const id = data._id;
-    const updatedData: Defect = {
+    const updatedData: User = {
         ...data,
-        _id: id,
-        status: statusValue,
-        open_date: new Date(data.open_date).toISOString().substr(0, 10),
-        admin_username,
+        enabled: enabledValue,
     };
-    editDefect(id, updatedData)
+    editUser(id, updatedData)
         .then((res) => {
             if (res.response === 'ok') {
                 setDataSource((prevVal) =>
-                    prevVal.map((item) => (item._id === id ? (item = { ...res.defect }) : item)),
+                    prevVal.map((item) => (item._id === id ? (item = { ...res.user }) : item)),
                 );
                 setSnack({
                     open: true,
-                    message: 'Дефект виправлено',
+                    message: 'Доступ користувача активовано',
                     type: 'success',
                 });
             }
@@ -124,46 +117,40 @@ export function checkModeSumbit(data, admin_username, statusValue, setSnack, set
             }),
         );
 }
-export function FilterByPriority(filter, filteredArr, setDataSource, setFilteredDataSource): void {
+export function FilterByPosition(filter, filteredArr, setDataSource, setFilteredDataSource): void {
     switch (filter) {
-        case 0:
-            getDefects().then((res) => {
-                setDataSource(res.defects);
-                setFilteredDataSource(res.defects);
+        case 'No filter':
+            getUsers().then((res) => {
+                setDataSource(res.users);
+                setFilteredDataSource(res.users);
             });
             break;
-        case 1:
-            setDataSource(filteredArr.filter((item: any) => item.priority === filter));
+        case 'None':
+            setDataSource(filteredArr.filter((item: any) => item.position === filter));
             break;
-        case 2:
-            setDataSource(filteredArr.filter((item: any) => item.priority === filter));
+        case 'Cleaner':
+            setDataSource(filteredArr.filter((item: any) => item.position === filter));
             break;
-        case 3:
-            setDataSource(filteredArr.filter((item: any) => item.priority === filter));
-            break;
-        case 4:
-            setDataSource(filteredArr.filter((item: any) => item.priority === filter));
+        case 'Repairer':
+            setDataSource(filteredArr.filter((item: any) => item.position === filter));
             break;
         default:
             setDataSource(filteredArr);
     }
 }
-export function FilterByStatus(filter, filteredArr, setDataSource, setFilteredDataSource): void {
+export function FilterByAccess(filter, filteredArr, setDataSource, setFilteredDataSource): void {
     switch (filter) {
-        case 'all':
-            getDefects().then((res) => {
-                setDataSource(res.defects);
-                setFilteredDataSource(res.defects);
+        case 'No filter':
+            getUsers().then((res) => {
+                setDataSource(res.users);
+                setFilteredDataSource(res.users);
             });
             break;
-        case 'open':
-            setDataSource(filteredArr.filter((item: any) => item.status === filter));
+        case 'true':
+            setDataSource(filteredArr.filter((item: any) => item.enabled === true));
             break;
-        case 'fixing':
-            setDataSource(filteredArr.filter((item: any) => item.status === filter));
-            break;
-        case 'solved':
-            setDataSource(filteredArr.filter((item: any) => item.status === filter));
+        case 'false':
+            setDataSource(filteredArr.filter((item: any) => item.enabled === false));
             break;
         default:
             setDataSource(filteredArr);
