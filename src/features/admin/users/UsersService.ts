@@ -41,6 +41,7 @@ export function updateModeSubmit(
         };
         editUser(data.id, updatedData)
             .then((res) => {
+                console.log(res);
                 if (res.response === 'ok') {
                     setDataSource((prevVal) =>
                         prevVal.map((item) =>
@@ -98,6 +99,7 @@ export function checkModeSumbit(data, enabledValue, setSnack, setDataSource): vo
     };
     editUser(id, updatedData)
         .then((res) => {
+            console.log(res);
             if (res.response === 'ok') {
                 setDataSource((prevVal) =>
                     prevVal.map((item) => (item._id === id ? (item = { ...res.user }) : item)),
@@ -154,5 +156,17 @@ export function FilterByAccess(filter, filteredArr, setDataSource, setFilteredDa
             break;
         default:
             setDataSource(filteredArr);
+    }
+}
+export function StylizePosition(position: string): string {
+    switch (position) {
+        case 'None':
+            return 'Посада відсутня';
+        case 'Cleaner':
+            return 'Сантіраний працівник';
+        case 'Repairer':
+            return 'Технічний працівник';
+        default:
+            return 'Посада відсутня';
     }
 }
