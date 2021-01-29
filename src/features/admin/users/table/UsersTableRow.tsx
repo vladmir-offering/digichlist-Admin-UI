@@ -6,11 +6,12 @@ import styles from './UsersTable.module.css';
 import DeleteDialog from '../../../../common/components/DeleteDialog/DeleteDialog';
 import UpdateDialog from '../UpdateDialog/UpdateDialog';
 import Status from '../../../../common/components/Status/Status';
+import { StylizePosition } from '../UsersService';
 
 function DefectsTableRow({ user, index, setEnabled, setDeleted, setUpdated }): JSX.Element {
     const [update, setUpdate] = React.useState(false);
     const [del, setDel] = React.useState(false);
-
+    const position = StylizePosition(user.position);
     const checkHandler = () => {
         setEnabled({ status: true, data: { ...user }, value: true });
     };
@@ -29,9 +30,9 @@ function DefectsTableRow({ user, index, setEnabled, setDeleted, setUpdated }): J
     return (
         <TableRow hover role='checkbox' tabIndex={-1}>
             <TableCell>{index}</TableCell>
-            <TableCell>{user.first_name + ' ' + user.last_name}</TableCell>
             <TableCell>{user.username}</TableCell>
-            <TableCell>{user.position}</TableCell>
+            <TableCell>{user.first_name + ' ' + user.last_name}</TableCell>
+            <TableCell>{position}</TableCell>
             <TableCell align='center'>
                 <Status status={user.enabled} />
             </TableCell>
