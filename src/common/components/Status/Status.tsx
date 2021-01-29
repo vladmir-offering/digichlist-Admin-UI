@@ -27,7 +27,18 @@ function Satus({ status }): JSX.Element {
                 );
                 break;
             case 'solved':
-                setStatusLabel(<Chip label='Закритий' style={{ backgroundColor: '##2196f3' }} />);
+                setStatusLabel(<Chip label='Закритий' />);
+                break;
+            case true:
+                setStatusLabel(
+                    <Chip
+                        label='Активний'
+                        style={{ backgroundColor: '#4caf50', color: 'white' }}
+                    />,
+                );
+                break;
+            case false:
+                setStatusLabel(<Chip label='Неактивний' />);
                 break;
         }
     }, []);
