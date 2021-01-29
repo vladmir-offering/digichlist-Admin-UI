@@ -38,8 +38,8 @@ function UpdateDialog({ open, setOpen, setUpdated, user }): JSX.Element {
         position: user.position,
     };
     const editValidationSchema = Yup.object().shape({
-        first_name: Yup.string().min(5, "Надто коротке ім'я").max(50, "Надто довге ім'я"),
-        last_name: Yup.string().min(5, 'Надто коротка назва').max(50, 'Надто довга назва'),
+        first_name: Yup.string().min(4, "Надто коротке ім'я").max(50, "Надто довге ім'я"),
+        last_name: Yup.string().min(4, 'Надто коротка назва').max(50, 'Надто довга назва'),
         enabled: Yup.string(),
         position: Yup.string(),
     });

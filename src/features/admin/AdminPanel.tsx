@@ -1,24 +1,30 @@
-import React from 'react';
-import { Route, Switch } from 'react-router-dom';
-import AppBar from '@material-ui/core/AppBar';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Drawer from '@material-ui/core/Drawer';
-import Hidden from '@material-ui/core/Hidden';
-import IconButton from '@material-ui/core/IconButton';
-import List from '@material-ui/core/List';
+import React, { useState } from 'react';
+import { Route, Switch, Link } from 'react-router-dom';
+import {
+    AppBar,
+    CssBaseline,
+    Drawer,
+    Hidden,
+    IconButton,
+    List,
+    Box,
+    Typography,
+    Avatar,
+    Divider,
+    Toolbar,
+    Button,
+    Badge,
+} from '@material-ui/core';
 
-import MenuIcon from '@material-ui/icons/Menu';
-import CloseIcon from '@material-ui/icons/Close';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
+import { Menu, Close } from '@material-ui/icons';
+import { makeStyles, useTheme, withStyles, Theme, createStyles } from '@material-ui/core/styles';
 
 import { MainListItems } from './AdminNavItem';
 import Admins from './admins';
 import Orders from './orders';
 import DefectsTable from './defects/index';
 import UsersTable from './users/index';
+import Dashboard from './dashboard/index';
 import { navList } from './nav';
 import { logOut } from '../../common/utils/api';
 
@@ -68,10 +74,47 @@ const useStyles = makeStyles((theme) => ({
             color: 'white',
         },
     },
+    avatar: {
+        height: '100px',
+        width: '100px',
+    },
 }));
+
+const StyledBadge = withStyles((theme: Theme) =>
+    createStyles({
+        badge: {
+            backgroundColor: '#44b700',
+            color: '#44b700',
+            boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
+            '&::after': {
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                borderRadius: '50%',
+                animation: '$ripple 1.2s infinite ease-in-out',
+                border: '1px solid currentColor',
+                content: '""',
+            },
+        },
+        '@keyframes ripple': {
+            '0%': {
+                transform: 'scale(.8)',
+                opacity: 1,
+            },
+            '100%': {
+                transform: 'scale(2.4)',
+                opacity: 0,
+            },
+        },
+    }),
+)(Badge);
+
 const AdminPanel = ({ setAuthInfo }): JSX.Element => {
     const classes = useStyles();
     const theme = useTheme();
+    const [admin_username, setAdminUserName] = useState(localStorage.getItem('admin_username'));
     const [mobileOpen, setMobileOpen] = React.useState(false);
     function handleDrawerToggle() {
         setMobileOpen(!mobileOpen);
@@ -100,7 +143,7 @@ const AdminPanel = ({ setAuthInfo }): JSX.Element => {
                         edge='start'
                         onClick={handleDrawerToggle}
                         className={classes.menuButton}>
-                        <MenuIcon />
+                        <Menu />
                     </IconButton>
                     <Typography variant='h6' className={classes.title}>
                         Digichlist
@@ -127,7 +170,7 @@ const AdminPanel = ({ setAuthInfo }): JSX.Element => {
                         <IconButton
                             onClick={handleDrawerToggle}
                             className={classes.closeMenuButton}>
-                            <CloseIcon />
+                            <Close />
                         </IconButton>
                         {drawer}
                     </Drawer>
@@ -140,6 +183,33 @@ const AdminPanel = ({ setAuthInfo }): JSX.Element => {
                             paper: classes.drawerPaper,
                         }}>
                         <div className={classes.toolbar} />
+                        <Box alignItems='center' display='flex' flexDirection='column' p={2}>
+                            <StyledBadge
+                                color='secondary'
+                                overlap='circle'
+                                anchorOrigin={{
+                                    vertical: 'bottom',
+                                    horizontal: 'right',
+                                }}
+                                badgeContent=''>
+                                <Avatar
+                                    variant='circular'
+                                    component={Link}
+                                    to='/admin/admins'
+                                    className={classes.avatar}
+                                />
+                            </StyledBadge>
+                            <Typography
+                                // className={classes.name}
+                                color='textPrimary'
+                                variant='h5'>
+                                {admin_username}
+                            </Typography>
+                            <Typography color='textSecondary' variant='body2'>
+                                Адмін
+                            </Typography>
+                        </Box>
+                        <Divider />
                         {drawer}
                     </Drawer>
                 </Hidden>
@@ -147,10 +217,11 @@ const AdminPanel = ({ setAuthInfo }): JSX.Element => {
             <div className={classes.content}>
                 <div className={classes.toolbar} />
                 <Switch>
+                    <Route path='/admin/dashboard' component={Dashboard} />
                     <Route path='/admin/admins' component={Admins} />
-                    <Route path='/admin/orders' component={Orders} />
                     <Route path='/admin/defects' component={DefectsTable} />
                     <Route path='/admin/users' component={UsersTable} />
+                    <Route path='/admin/orders' component={Orders} />
                 </Switch>
             </div>
         </div>
