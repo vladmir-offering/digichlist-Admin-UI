@@ -4,7 +4,7 @@ import { Chip } from '@material-ui/core';
 function Satus({ status }): JSX.Element {
     const [statusLabel, setStatusLabel] = useState(<Chip label='Відкритий' color='secondary' />);
     useEffect(() => {
-        switch (status) {
+        switch (status.toString()) {
             case 'all':
                 setStatusLabel(
                     <Chip label='Всі' style={{ backgroundColor: '#4caf50', color: 'white' }} />,
@@ -29,7 +29,7 @@ function Satus({ status }): JSX.Element {
             case 'solved':
                 setStatusLabel(<Chip label='Закритий' />);
                 break;
-            case true:
+            case 'true':
                 setStatusLabel(
                     <Chip
                         label='Активний'
@@ -37,7 +37,7 @@ function Satus({ status }): JSX.Element {
                     />,
                 );
                 break;
-            case false:
+            case 'false':
                 setStatusLabel(<Chip label='Неактивний' />);
                 break;
         }

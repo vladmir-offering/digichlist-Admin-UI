@@ -60,7 +60,7 @@ function UpdateDialog({ open, setOpen, defect }): JSX.Element {
             status: true,
             data: {
                 id: defect._id,
-                values: { ...values },
+                values: { ...defect, ...values },
                 intialFormValues: { ...intialFormValues },
             },
         });
