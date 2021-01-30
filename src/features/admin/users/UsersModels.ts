@@ -30,12 +30,12 @@ interface PositionFilter {
 }
 export const columns: Array<Columns> = [
     { id: 'id', label: '№', minWidth: '10%' },
-    { id: 'fullname', label: "Повне ім'я", minWidth: '30%' },
     {
         id: 'login',
         label: "Унікальне ім'я в системі",
         minWidth: '25%',
     },
+    { id: 'fullname', label: "Повне ім'я", minWidth: '30%' },
     {
         id: 'position',
         label: 'Посада',
