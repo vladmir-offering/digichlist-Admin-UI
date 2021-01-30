@@ -164,7 +164,7 @@ export const Orders = () => {
         setFilterValue(event.target.value);
     };
 
-    const fieldsName = ['№', 'Назва', 'Кількість', 'Дата', 'Примітка', 'Статус'];
+    const fieldsName = ['№', 'Назва', 'Кількість', 'Дата', "Ім'я користувача", 'Статус'];
     return loading ? (
         <div className={styles.loader}>
             <CircularProgress />
