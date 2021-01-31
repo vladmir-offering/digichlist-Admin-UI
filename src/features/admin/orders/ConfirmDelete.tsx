@@ -6,20 +6,29 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-const ConfirmDelete = ({ open, setShowDelDialog, info }) => {
+const ConfirmDelete = ({ open, setShowDelDialog, id, setDeleteOrder }) => {
     const handleClose = () => {
         setShowDelDialog(false);
     };
 
     return (
         <Dialog open={open} onClose={handleClose} aria-labelledby='responsive-dialog-title'>
-            <DialogTitle id='responsive-dialog-title'>Додаткова інформація</DialogTitle>
+            <DialogTitle id='responsive-dialog-title'>Видалити замовлення</DialogTitle>
             <DialogContent>
-                <DialogContentText>{info}</DialogContentText>
+                <DialogContentText>Ви впевнені що хочете видалити замовлення?</DialogContentText>
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleClose} color='primary' autoFocus>
-                    Закрити
+                <Button autoFocus onClick={handleClose} color='primary'>
+                    Відмінити
+                </Button>
+                <Button
+                    onClick={() => {
+                        setShowDelDialog(false);
+                        setDeleteOrder({ id: id, delete: true });
+                    }}
+                    color='primary'
+                    autoFocus>
+                    Видалити
                 </Button>
             </DialogActions>
         </Dialog>

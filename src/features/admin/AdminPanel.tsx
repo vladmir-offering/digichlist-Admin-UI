@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Link } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Drawer from '@material-ui/core/Drawer';
@@ -68,6 +68,10 @@ const useStyles = makeStyles((theme) => ({
             color: 'white',
         },
     },
+    linkBtn: {
+        color: 'white',
+        textDecoration: 'none',
+    },
 }));
 const AdminPanel = ({ setAuthInfo }): JSX.Element => {
     const classes = useStyles();
@@ -103,7 +107,9 @@ const AdminPanel = ({ setAuthInfo }): JSX.Element => {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant='h6' className={classes.title}>
-                        Digichlist
+                        <Link to='/admin/dashboard' className={classes.linkBtn}>
+                            Digichlist
+                        </Link>
                     </Typography>
                     <Button color='inherit' onClick={logoutHandler}>
                         Logout
