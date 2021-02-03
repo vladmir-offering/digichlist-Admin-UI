@@ -64,6 +64,7 @@ export async function getDefectsByDateAndStatus(setSnack, status, date): Promise
                 status,
                 date_type: 'open_date',
                 start: date,
+                end: new Date().toISOString().substr(0, 10),
             },
         })
         .then((res) => {
@@ -100,15 +101,26 @@ export async function getDefectsNumberByDateAndStatus(setSnack, date_period: Dat
     let OpenDefectsCount = getDefectsByDateAndStatus(setSnack, 'open', filterDate);
     let ProccessDefectsCount = getDefectsByDateAndStatus(setSnack, 'fixing', filterDate);
     let ClosedDefectsCount = getDefectsByDateAndStatus(setSnack, 'solved', filterDate);
-    const defects = Promise.all([OpenDefectsCount, ProccessDefectsCount, ClosedDefectsCount]).then(
-        (res) => {
+    const defects = Promise.all([OpenDefectsCount, ProccessDefectsCount, ClosedDefectsCount])
+        .then((res) => {
+            setSnack({
+                open: true,
+                message: `Дані успішно завантажені`,
+                type: 'success',
+            });
             return {
                 OpenDefectsCount: res[0].defects.length,
                 ProccessDefectsCount: res[1].defects.length,
                 ClosedDefectsCount: res[2].defects.length,
             };
-        },
-    );
+        })
+        .catch((err) => {
+            setSnack({
+                open: true,
+                message: `На сервері сталась помилка - ${err}`,
+                type: 'error',
+            });
+        });
     switch (date_period) {
         case 'yesterday':
             return await defects;
