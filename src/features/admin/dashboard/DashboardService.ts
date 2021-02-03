@@ -1,7 +1,6 @@
 import { telegramApiAxios } from '../../../common/utils/interceptor';
 import { environment } from '../../../environments/environment';
-import { Data, FilteredDefectNumbers } from './DashboardModels';
-import { Defect } from '../defects/DefectsModels';
+import { FilteredDefectNumbers, DatePeriodType } from './DashboardModels';
 import { getDefects } from '../defects/DefectsService';
 import { User } from '../users/UsersModels';
 
@@ -58,6 +57,67 @@ export async function getDefectsNumbers(setSnack): Promise<FilteredDefectNumbers
         ClosedDefectsCount,
     };
 }
-export function CreateData(): any {
-    return Data;
+export async function getDefectsByDateAndStatus(setSnack, status, date): Promise<any> {
+    return await telegramApiAxios
+        .get(`${environment.BASEURL}defect/getByStatus`, {
+            params: {
+                status,
+                date_type: 'open_date',
+                start: date,
+            },
+        })
+        .then((res) => {
+            if (res.status === 200) {
+                return res.data;
+            }
+        })
+        .catch((err) => {
+            setSnack({
+                open: true,
+                message: `На сервері сталась помилка - ${err}`,
+                type: 'error',
+            });
+        });
+}
+function FormatedDate(date) {
+    return date.toISOString().substr(0, 10);
+}
+export function DefineDate(date_period: DatePeriodType) {
+    const Today = new Date();
+    switch (date_period) {
+        case 'yesterday':
+            return FormatedDate(new Date(Today.setDate(Today.getDate() - 1)));
+        case 'lastweek':
+            return FormatedDate(new Date(Today.setDate(Today.getDate() - 7)));
+        case 'lastmonth':
+            return FormatedDate(new Date(Today.setDate(Today.getMonth() - 1)));
+        default:
+            return null;
+    }
+}
+export async function getDefectsNumberByDateAndStatus(setSnack, date_period: DatePeriodType) {
+    let filterDate = DefineDate(date_period);
+    let OpenDefectsCount = getDefectsByDateAndStatus(setSnack, 'open', filterDate);
+    let ProccessDefectsCount = getDefectsByDateAndStatus(setSnack, 'fixing', filterDate);
+    let ClosedDefectsCount = getDefectsByDateAndStatus(setSnack, 'solved', filterDate);
+    const defects = Promise.all([OpenDefectsCount, ProccessDefectsCount, ClosedDefectsCount]).then(
+        (res) => {
+            return {
+                OpenDefectsCount: res[0].defects.length,
+                ProccessDefectsCount: res[1].defects.length,
+                ClosedDefectsCount: res[2].defects.length,
+            };
+        },
+    );
+    switch (date_period) {
+        case 'yesterday':
+            return await defects;
+        case 'lastweek':
+            return await defects;
+        case 'lastmonth':
+            return await defects;
+
+        default:
+            return null;
+    }
 }
