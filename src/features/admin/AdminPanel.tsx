@@ -16,6 +16,7 @@ import {
     Badge,
 } from '@material-ui/core';
 
+
 import { Menu, Close } from '@material-ui/icons';
 import { makeStyles, useTheme, withStyles, Theme, createStyles } from '@material-ui/core/styles';
 
@@ -77,6 +78,11 @@ const useStyles = makeStyles((theme) => ({
     avatar: {
         height: '100px',
         width: '100px',
+
+    linkBtn: {
+        color: 'white',
+        textDecoration: 'none',
+
     },
 }));
 
@@ -146,7 +152,9 @@ const AdminPanel = ({ setAuthInfo }): JSX.Element => {
                         <Menu />
                     </IconButton>
                     <Typography variant='h6' className={classes.title}>
-                        Digichlist
+                        <Link to='/admin/dashboard' className={classes.linkBtn}>
+                            Digichlist
+                        </Link>
                     </Typography>
                     <Button color='inherit' onClick={logoutHandler}>
                         Logout
