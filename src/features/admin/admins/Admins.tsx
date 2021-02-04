@@ -15,6 +15,7 @@ import styles from './Admins.module.css';
 import { getAdmins, addAdminData, deleteAdminData, updateAdminData } from './AdminsServise';
 import AdminRow from './AdminRow';
 import AdminAddDialog from './AdminAddDialog';
+import { SupervisedUserCircle } from '@material-ui/icons';
 
 import SnackbarHandler from '../../../common/components/Snackbar/snackbar';
 import { Paper } from '@material-ui/core';
@@ -168,7 +169,7 @@ export const Admins = () => {
     const fieldsName = ['№', "Ім'я", 'Пошта', 'Дії'];
     return loading ? (
         <div className={styles.loader}>
-            <CircularProgress />
+            <CircularProgress size={70} />
         </div>
     ) : (
         <div>
@@ -178,6 +179,7 @@ export const Admins = () => {
                     variant='h4'
                     color='textPrimary'
                     className={styles.entityHeaderTitle}>
+                    <SupervisedUserCircle fontSize='large' />
                     {'Адміністратори'}
                 </Typography>
                 <Button

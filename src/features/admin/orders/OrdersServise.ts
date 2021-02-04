@@ -4,12 +4,16 @@ import { environment } from '../../../environments/environment';
 export const getOrders = async () => {
     try {
         const response = await telegramApiAxios.get(`${environment.BASEURL}order/all`);
-        await response.data.orders.forEach(async (item) => {
+        for (const item of response.data.orders) {
             const user = await telegramApiAxios.get(
                 `${environment.BASEURL}user/getById/${item.user}`,
             );
-            item.username = `${user.data.user.first_name} ${user.data.user.last_name}`;
-        });
+            if (!user.data.user) {
+                item.username = "Ім'я не знайдено";
+            } else {
+                item.username = `${user.data.user.first_name} ${user.data.user.last_name}`;
+            }
+        }
         return response.data.orders;
     } catch (err) {
         return { err: err };
@@ -34,7 +38,6 @@ export const updateOrderData = async (ordersData, editOrder) => {
         const updatedList = ordersData.map((item) => {
             return response.data.order._id === item._id ? response.data.order : item;
         });
-        console.log(updatedList);
         return updatedList;
     } catch (err) {
         return { err: err };

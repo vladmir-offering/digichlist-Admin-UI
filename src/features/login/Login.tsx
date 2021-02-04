@@ -67,7 +67,7 @@ const Login = ({ setAuthInfo }): JSX.Element => {
             <CssBaseline />
             <div className={classes.paper}>
                 <Typography component='h1' variant='h5'>
-                    Log in
+                    Ввійдіть
                 </Typography>
                 <Formik
                     initialValues={initialValues}
@@ -82,7 +82,7 @@ const Login = ({ setAuthInfo }): JSX.Element => {
                                 required
                                 fullWidth
                                 id='name'
-                                label='Name'
+                                label='Електронна адреса'
                                 name='name'
                                 value={props.values.name}
                                 onBlur={props.handleBlur}
@@ -97,7 +97,7 @@ const Login = ({ setAuthInfo }): JSX.Element => {
                                 required
                                 fullWidth
                                 name='password'
-                                label='Password'
+                                label='Пароль'
                                 type='password'
                                 id='password'
                                 onBlur={props.handleBlur}
@@ -114,7 +114,7 @@ const Login = ({ setAuthInfo }): JSX.Element => {
                                 variant='contained'
                                 color='primary'
                                 className={classes.submit}>
-                                Log In
+                                Вхід
                             </Button>
                         </form>
                     )}
