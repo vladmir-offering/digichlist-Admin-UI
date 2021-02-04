@@ -7,6 +7,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import { NavLink } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
+    a: {
+        color: 'black',
+    },
     itemText: {
         fontSize: '1rem',
     },
@@ -23,7 +26,12 @@ const useStyles = makeStyles((theme) => ({
 export const MainListItems = ({ path, icon, title }) => {
     const classes = useStyles();
     return (
-        <ListItem component={NavLink} to={path} exact activeClassName={classes.active}>
+        <ListItem
+            className={classes.a}
+            component={NavLink}
+            to={path}
+            exact
+            activeClassName={classes.active}>
             <ListItemIcon>{icon}</ListItemIcon>
             <ListItemText
                 disableTypography
