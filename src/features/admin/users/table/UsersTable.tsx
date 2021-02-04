@@ -18,7 +18,7 @@ import {
 import { v4 as uuidv4 } from 'uuid';
 import { Group } from '@material-ui/icons';
 
-import SnackbarHandler from '../../../../common/components/Snackbar/snackbar';
+import SnackbarHandler, { ISnackbar } from '../../../../common/components/Snackbar/snackbar';
 import Loader from '../../../../common/components/Loader/Loader';
 import UsersTableRow from './UsersTableRow';
 
@@ -35,7 +35,7 @@ import { columns, accesses, positions } from '../UsersModels';
 
 function UsersTable(): JSX.Element {
     const [open, setOpen] = React.useState(false);
-    const [snack, setSnack] = useState({ open: false, message: '', type: '' });
+    const [snack, setSnack] = useState({ open: false, message: '', type: 'success' } as ISnackbar);
     const [dataSource, setDataSource] = useState(Array);
     const [FilteredDataSource, setFilteredDataSource] = useState(Array);
     const [loaded, setLoaded] = useState(false);

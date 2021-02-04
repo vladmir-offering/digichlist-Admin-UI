@@ -1,10 +1,14 @@
 import { telegramApiAxios } from '../../../common/utils/interceptor';
 import { environment } from '../../../environments/environment';
-import { FilteredDefectNumbers, DatePeriodType } from './DashboardModels';
+import { FilteredDefectNumbers, DatePeriodType, StatusType } from './DashboardModels';
 import { getDefects } from '../defects/DefectsService';
 import { User } from '../users/UsersModels';
+import { ISnackbar } from '../../../common/components/Snackbar/snackbar';
 
-export async function getUserByName(username: string | null, setSnack): Promise<User> {
+export async function getUserByName(
+    username: string | null,
+    setSnack: React.Dispatch<React.SetStateAction<ISnackbar>>,
+): Promise<User> {
     return await telegramApiAxios
         .get(`${environment.BASEURL}user/getByUsername/${username}`)
         .then((res) => {
@@ -20,7 +24,9 @@ export async function getUserByName(username: string | null, setSnack): Promise<
             });
         });
 }
-export async function getDefectsNumbers(setSnack): Promise<FilteredDefectNumbers> {
+export async function getDefectsNumbers(
+    setSnack: React.Dispatch<React.SetStateAction<ISnackbar>>,
+): Promise<FilteredDefectNumbers> {
     const AllDefectsArray = await getDefects().then((res) => res.defects);
     if (AllDefectsArray.length <= 0) {
         setSnack({
@@ -57,7 +63,11 @@ export async function getDefectsNumbers(setSnack): Promise<FilteredDefectNumbers
         ClosedDefectsCount,
     };
 }
-export async function getDefectsByDateAndStatus(setSnack, status, date): Promise<any> {
+export async function getDefectsByDateAndStatus(
+    setSnack: React.Dispatch<React.SetStateAction<ISnackbar>>,
+    status: StatusType,
+    date: string,
+): Promise<any> {
     return await telegramApiAxios
         .get(`${environment.BASEURL}defect/getByDateAndStatus`, {
             params: {
@@ -83,7 +93,7 @@ export async function getDefectsByDateAndStatus(setSnack, status, date): Promise
 function FormatedDate(date) {
     return date.toISOString().substr(0, 10);
 }
-export function DefineDate(date_period: DatePeriodType) {
+export function DefineDate(date_period: DatePeriodType): string {
     const Today = new Date();
     switch (date_period) {
         case 'yesterday':
@@ -93,10 +103,13 @@ export function DefineDate(date_period: DatePeriodType) {
         case 'lastmonth':
             return FormatedDate(new Date(Today.setDate(Today.getMonth() - 1)));
         default:
-            return null;
+            return FormatedDate(new Date());
     }
 }
-export async function getDefectsNumberByDateAndStatus(setSnack, date_period: DatePeriodType) {
+export async function getDefectsNumberByDateAndStatus(
+    setSnack: React.Dispatch<React.SetStateAction<ISnackbar>>,
+    date_period: DatePeriodType,
+): Promise<FilteredDefectNumbers | void> {
     let filterDate = DefineDate(date_period);
     let OpenDefectsCount = getDefectsByDateAndStatus(setSnack, 'open', filterDate);
     let ProccessDefectsCount = getDefectsByDateAndStatus(setSnack, 'fixing', filterDate);
@@ -130,6 +143,6 @@ export async function getDefectsNumberByDateAndStatus(setSnack, date_period: Dat
             return await defects;
 
         default:
-            return null;
+            return;
     }
 }

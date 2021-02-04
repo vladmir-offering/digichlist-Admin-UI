@@ -5,7 +5,7 @@ export interface User {
     last_name: string;
     username: string;
     enabled: boolean;
-    position: string; // 'Cleaner' 'Repairer 'None'
+    position: string;
     chat_id: string;
 }
 export interface GetUsers {

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Table,
     TableBody,
@@ -18,7 +18,7 @@ import {
 import { v4 as uuidv4 } from 'uuid';
 import { NotificationImportant } from '@material-ui/icons';
 
-import SnackbarHandler from '../../../../common/components/Snackbar/snackbar';
+import SnackbarHandler, { ISnackbar } from '../../../../common/components/Snackbar/snackbar';
 import Loader from '../../../../common/components/Loader/Loader';
 import DefectsTableRow from './DefectsTableRow';
 
@@ -33,12 +33,11 @@ import {
 import styles from './DefectsTable.module.css';
 import { columns, statuses, priorities } from '../DefectsModels';
 import DefectsContext from '../DefectsContext';
-import UserContext from '../../../login/UserContext';
 
 function DefectsTable(): JSX.Element {
     const [open, setOpen] = React.useState(false);
-    const [admin_username, setAdminUserName] = useState(localStorage.getItem('admin_username'));
-    const [snack, setSnack] = useState({ open: false, message: '', type: '' });
+    const admin_username = localStorage.getItem('admin_username');
+    const [snack, setSnack] = useState({ open: false, message: '', type: 'success' } as ISnackbar);
     const [dataSource, setDataSource] = useState(Array);
     const [FilteredDataSource, setFilteredDataSource] = useState(Array);
     const [loaded, setLoaded] = useState(false);

@@ -1,22 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import {
-    Grid,
-    Box,
-    Card,
-    CardHeader,
-    CardContent,
-    Divider,
-    useTheme,
-    Typography,
-    Button,
-} from '@material-ui/core';
+import { Grid, useTheme } from '@material-ui/core';
 
-import { Bar, Doughnut } from 'react-chartjs-2';
-
-import SnackbarHandler from '../../../common/components/Snackbar/snackbar';
-import Loader from '../../../common/components/Loader/Loader';
-import styles from './Dashboard.module.css';
+import SnackbarHandler, { ISnackbar } from '../../../common/components/Snackbar/snackbar';
 import { getDefectsNumberByDateAndStatus, getDefectsNumbers } from './DashboardService';
 import {
     BarDataCreate,
@@ -30,10 +15,14 @@ import BarCard from './BarCard';
 
 function Dashboard(): JSX.Element {
     const theme = useTheme();
-    const [snack, setSnack] = useState({ open: false, message: '', type: '' });
+    const [snack, setSnack] = useState({ open: false, message: '', type: 'success' } as ISnackbar);
     const doughnutOptions = DoughnutDataOptions(theme);
     const barOptions = BarDataOptions(theme);
-    const [doughnutData, setDoughnutData] = useState({ datasets: [], labels: [], apperiance: [] });
+    const [doughnutData, setDoughnutData] = useState({
+        datasets: [],
+        labels: [],
+        apperiance: [],
+    } as any);
     const [barData, setBarData] = useState({ datasets: [], labels: [] } as any);
     const [filteredDate, setFilteredDate] = useState('yesterday' as DatePeriodType);
     const [loaded, setLoaded] = useState(false);

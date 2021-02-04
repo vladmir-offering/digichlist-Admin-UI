@@ -26,7 +26,7 @@ import styles from './Orders.module.css';
 import { getOrders, updateOrderData, delOrdersData } from './OrdersServise';
 import OrderRow from './OrderRow';
 
-import SnackbarHandler from '../../../common/components/Snackbar/snackbar';
+import SnackbarHandler, { ISnackbar } from '../../../common/components/Snackbar/snackbar';
 
 export const Orders = () => {
     type Admin = Array<{
@@ -56,7 +56,7 @@ export const Orders = () => {
         delete: false,
         id: 0,
     });
-    const [snack, setSnack] = useState({ open: false, message: '', type: 'success' });
+    const [snack, setSnack] = useState({ open: false, message: '', type: 'success' } as ISnackbar);
 
     useEffect(() => {
         (async function () {

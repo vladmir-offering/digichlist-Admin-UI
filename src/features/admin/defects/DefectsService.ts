@@ -1,3 +1,4 @@
+import { ISnackbar } from '../../../common/components/Snackbar/snackbar';
 import { telegramApiAxios } from '../../../common/utils/interceptor';
 import { environment } from '../../../environments/environment';
 import { GetDefects, Defect } from './DefectsModels';
@@ -20,8 +21,8 @@ export async function deleteDefect(id: string): Promise<GetDefects> {
 
 export function updateModeSubmit(
     data: any,
-    admin_username,
-    setSnack: any,
+    admin_username: string | null,
+    setSnack: React.Dispatch<React.SetStateAction<ISnackbar>>,
     setDataSource: any,
     closeModal: any,
 ): void {
@@ -70,7 +71,7 @@ export function updateModeSubmit(
 }
 export function deleteModeSubmit(
     id: any,
-    setSnack: any,
+    setSnack: React.Dispatch<React.SetStateAction<ISnackbar>>,
     setDataSource: any,
     closeModal: any,
 ): void {
@@ -94,7 +95,13 @@ export function deleteModeSubmit(
             }),
         );
 }
-export function checkModeSumbit(data, admin_username, statusValue, setSnack, setDataSource): void {
+export function checkModeSumbit(
+    data,
+    admin_username: string | null,
+    statusValue,
+    setSnack: React.Dispatch<React.SetStateAction<ISnackbar>>,
+    setDataSource,
+): void {
     const id = data._id;
     const updatedData: Defect = {
         ...data,

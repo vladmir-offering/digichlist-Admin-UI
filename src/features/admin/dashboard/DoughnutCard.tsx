@@ -11,7 +11,7 @@ import {
 } from '@material-ui/core';
 import { Doughnut } from 'react-chartjs-2';
 
-function DoughnutCard({ loaded, doughnutData, doughnutOptions }) {
+function DoughnutCard({ loaded, doughnutData, doughnutOptions }: any): JSX.Element {
     return (
         <Card>
             <CardHeader title='Кількість дефектів' />

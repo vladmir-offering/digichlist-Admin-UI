@@ -1,6 +1,10 @@
+import React from 'react';
 import { telegramApiAxios } from '../../../common/utils/interceptor';
 import { environment } from '../../../environments/environment';
 import { GetUsers, User } from './UsersModels';
+import { Tooltip, IconButton } from '@material-ui/core';
+import { LiveHelp } from '@material-ui/icons';
+import { ISnackbar } from '../../../common/components/Snackbar/snackbar';
 
 export async function getUsers(): Promise<GetUsers> {
     return await telegramApiAxios.get(`${environment.BASEURL}user/all`).then((res) => {
@@ -67,7 +71,7 @@ export function updateModeSubmit(
 }
 export function deleteModeSubmit(
     id: any,
-    setSnack: any,
+    setSnack: React.Dispatch<React.SetStateAction<ISnackbar>>,
     setDataSource: any,
     closeModal: any,
 ): void {
@@ -91,7 +95,12 @@ export function deleteModeSubmit(
             }),
         );
 }
-export function checkModeSumbit(data, enabledValue, setSnack, setDataSource): void {
+export function checkModeSumbit(
+    data,
+    enabledValue,
+    setSnack: React.Dispatch<React.SetStateAction<ISnackbar>>,
+    setDataSource,
+): void {
     const id = data._id;
     const updatedData: User = {
         ...data,
@@ -173,5 +182,27 @@ export function StylizePosition(position: string): string {
             return 'Мерчандайзер';
         default:
             return 'Посада відсутня';
+    }
+}
+export function SurnameCheck(surname: string): string | JSX.Element {
+    switch (surname) {
+        case 'Прізвище відсутнє':
+            return (
+                <Tooltip title={'Прізвище відсутнє'}>
+                    <IconButton size='small'>
+                        <LiveHelp />
+                    </IconButton>
+                </Tooltip>
+            );
+        case 'Last name is missing':
+            return (
+                <Tooltip title={'Прізвище відсутнє'}>
+                    <IconButton size='small'>
+                        <LiveHelp />
+                    </IconButton>
+                </Tooltip>
+            );
+        default:
+            return surname;
     }
 }
