@@ -78,6 +78,10 @@ const useStyles = makeStyles((theme) => ({
         height: '100px',
         width: '100px',
     },
+    linkBtn: {
+        color: 'white',
+        textDecoration: 'none',
+    },
 }));
 
 const StyledBadge = withStyles((theme: Theme) =>
@@ -146,7 +150,9 @@ const AdminPanel = ({ setAuthInfo }): JSX.Element => {
                         <Menu />
                     </IconButton>
                     <Typography variant='h6' className={classes.title}>
-                        Digichlist
+                        <Link to='/admin/dashboard' className={classes.linkBtn}>
+                            Digichlist
+                        </Link>
                     </Typography>
                     <Button color='inherit' onClick={logoutHandler}>
                         Logout
