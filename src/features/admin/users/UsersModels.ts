@@ -8,7 +8,6 @@ export interface User {
     position: string; // 'Cleaner' 'Repairer 'None'
     chat_id: string;
 }
-
 export interface GetUsers {
     response: string;
     message: string;
@@ -54,7 +53,6 @@ export const columns: Array<Columns> = [
         align: 'center',
     },
 ];
-
 export const accesses: Array<AccessFilter> = [
     { title: 'Фільтр відсутній', value: 'No filter' },
     { title: 'Неактивований', value: 'false' },
@@ -63,6 +61,6 @@ export const accesses: Array<AccessFilter> = [
 export const positions: Array<PositionFilter> = [
     { title: 'Фільтр відсутній', value: 'No filter' },
     { title: 'Посада відсутня', value: 'None' },
-    { title: 'Санітарний працівник', value: 'Cleaner' },
+    { title: 'Прибиральниця', value: 'Cleaner' },
     { title: 'Технічний працівник', value: 'Repairer' },
 ];
