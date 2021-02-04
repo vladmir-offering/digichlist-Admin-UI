@@ -16,7 +16,6 @@ import {
     Badge,
 } from '@material-ui/core';
 
-
 import { Menu, Close } from '@material-ui/icons';
 import { makeStyles, useTheme, withStyles, Theme, createStyles } from '@material-ui/core/styles';
 
@@ -78,11 +77,10 @@ const useStyles = makeStyles((theme) => ({
     avatar: {
         height: '100px',
         width: '100px',
-
+    },
     linkBtn: {
         color: 'white',
         textDecoration: 'none',
-
     },
 }));
 
