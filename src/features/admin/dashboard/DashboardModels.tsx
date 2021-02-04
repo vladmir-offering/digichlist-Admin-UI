@@ -24,7 +24,7 @@ export const BarDataCreate = ({ OpenDefectsCount, ProccessDefectsCount, ClosedDe
 
 export const BarDataOptions = (theme): any => {
     return {
-        animation: false,
+        responsiveAnimationDuration: 5000,
         cornerRadius: 20,
         layout: { padding: 0 },
         legend: { display: false },

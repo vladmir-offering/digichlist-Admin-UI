@@ -1,4 +1,4 @@
 export const environment = {
     production: false,
-    BASEURL: 'https://digichlist-api.herokuapp.com/api/',
+    BASEURL: 'http://188.34.181.177:5000/api/',
 };

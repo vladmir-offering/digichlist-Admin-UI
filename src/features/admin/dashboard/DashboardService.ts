@@ -59,7 +59,7 @@ export async function getDefectsNumbers(setSnack): Promise<FilteredDefectNumbers
 }
 export async function getDefectsByDateAndStatus(setSnack, status, date): Promise<any> {
     return await telegramApiAxios
-        .get(`${environment.BASEURL}defect/getByStatus`, {
+        .get(`${environment.BASEURL}defect/getByDateAndStatus`, {
             params: {
                 status,
                 date_type: 'open_date',
