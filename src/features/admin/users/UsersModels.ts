@@ -63,4 +63,5 @@ export const positions: Array<PositionFilter> = [
     { title: 'Посада відсутня', value: 'None' },
     { title: 'Прибиральниця', value: 'Cleaner' },
     { title: 'Технічний працівник', value: 'Repairer' },
+    { title: 'Мерчандайзер', value: 'Merchandiser' },
 ];

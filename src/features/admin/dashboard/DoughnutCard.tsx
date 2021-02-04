@@ -1,8 +1,15 @@
 import React from 'react';
 
-import { Card, CardHeader, Divider, CardContent, Box, Typography } from '@material-ui/core';
+import {
+    Card,
+    CardHeader,
+    Divider,
+    CardContent,
+    Box,
+    Typography,
+    CircularProgress,
+} from '@material-ui/core';
 import { Doughnut } from 'react-chartjs-2';
-import Loader from '../../../common/components/Loader/Loader';
 
 function DoughnutCard({ loaded, doughnutData, doughnutOptions }) {
     return (
@@ -14,7 +21,9 @@ function DoughnutCard({ loaded, doughnutData, doughnutOptions }) {
                     {loaded ? (
                         <Doughnut data={doughnutData} options={doughnutOptions} />
                     ) : (
-                        <Loader />
+                        <CircularProgress
+                            style={{ position: 'absolute', top: '50%', left: '45%' }}
+                        />
                     )}
                 </Box>
                 <Box display='flex' justifyContent='center' mt={2}>
