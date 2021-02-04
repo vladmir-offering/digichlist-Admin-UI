@@ -62,7 +62,6 @@ export const Orders = () => {
         (async function () {
             const response = await getOrders();
             if (Array.isArray(response)) {
-                console.log(response);
                 const newList = response.filter((item) => item.done === false);
                 setOrderData(newList);
                 setOrderDataCopy(response);
@@ -114,7 +113,7 @@ export const Orders = () => {
                 if (Array.isArray(response)) {
                     setOrderDataCopy(response);
                     filterOrdersHandler(response);
-                    setPage(Math.ceil((ordersDataCopy.length - 1) / rowsPerPage) - 1);
+                    setPage(0);
                     setSnack({
                         open: true,
                         message: 'Замовлення видалено',
@@ -137,7 +136,6 @@ export const Orders = () => {
     }, [filterValue]);
 
     const filterOrdersHandler = (data) => {
-        console.log(ordersDataCopy);
         if (filterValue === 'Активні') {
             const newList = data.filter((item) => item.done === false);
             setOrderData(newList);
@@ -167,7 +165,7 @@ export const Orders = () => {
     const fieldsName = ['№', 'Назва', 'Кількість', 'Дата', "Ім'я користувача", 'Статус'];
     return loading ? (
         <div className={styles.loader}>
-            <CircularProgress />
+            <CircularProgress size={70} />
         </div>
     ) : (
         <div>

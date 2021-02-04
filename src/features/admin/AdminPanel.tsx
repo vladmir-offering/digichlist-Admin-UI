@@ -155,7 +155,7 @@ const AdminPanel = ({ setAuthInfo }): JSX.Element => {
                         </Link>
                     </Typography>
                     <Button color='inherit' onClick={logoutHandler}>
-                        Logout
+                        Вихід
                     </Button>
                 </Toolbar>
             </AppBar>
