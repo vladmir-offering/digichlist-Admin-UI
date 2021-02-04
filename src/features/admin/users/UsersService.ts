@@ -136,6 +136,9 @@ export function FilterByPosition(filter, filteredArr, setDataSource, setFiltered
         case 'Repairer':
             setDataSource(filteredArr.filter((item: any) => item.position === filter));
             break;
+        case 'Merchandiser':
+            setDataSource(filteredArr.filter((item: any) => item.position === filter));
+            break;
         default:
             setDataSource(filteredArr);
     }
@@ -166,6 +169,8 @@ export function StylizePosition(position: string): string {
             return 'Прибиральниця';
         case 'Repairer':
             return 'Технічний працівник';
+        case 'Merchandiser':
+            return 'Мерчандайзер';
         default:
             return 'Посада відсутня';
     }

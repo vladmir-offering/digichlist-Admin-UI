@@ -32,7 +32,7 @@ function DefectsTableRow({ user, index, setEnabled, setDeleted, setUpdated }): J
             <TableCell>{index}</TableCell>
             <TableCell>{user.username}</TableCell>
             <TableCell>
-                {user.first_name}
+                {`${user.first_name} `}
                 {user.last_name === 'Last name is missing' ? (
                     <Tooltip title={'Прізвище відсутнє'}>
                         <IconButton size="small">

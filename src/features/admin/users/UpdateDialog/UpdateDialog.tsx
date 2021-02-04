@@ -127,6 +127,7 @@ function UpdateDialog({ open, setOpen, setUpdated, user }): JSX.Element {
                                         onChange={handleChange}>
                                         <MenuItem value={'Cleaner'}>Прибиральниця</MenuItem>
                                         <MenuItem value={'Repairer'}>Технічний працівник</MenuItem>
+                                        <MenuItem value={'Merchandiser'}>Мерчандайзер</MenuItem>
                                         <MenuItem value={'None'}>Посада відсутня</MenuItem>
                                     </Select>
                                 </FormControl>

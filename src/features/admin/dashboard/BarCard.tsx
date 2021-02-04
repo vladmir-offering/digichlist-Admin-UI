@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Button, Card, CardContent, CardHeader, Divider } from '@material-ui/core';
+import { Box, Button, Card, CardContent, CardHeader, CircularProgress, Divider } from '@material-ui/core';
 import styles from './Dashboard.module.css';
 import { Bar } from 'react-chartjs-2';
 import Loader from '../../../common/components/Loader/Loader';
@@ -48,7 +48,13 @@ function BarCard({ loaded, barData, barOptions, setFilteredDate }) {
             <Divider />
             <CardContent>
                 <Box height={400} position='relative'>
-                    {loaded ? <Bar data={barData} options={barOptions} /> : <Loader />}
+                    {loaded ? (
+                        <Bar data={barData} options={barOptions} />
+                    ) : (
+                        <CircularProgress
+                            style={{ position: 'absolute', top: '50%', left: '50%' }}
+                        />
+                    )}
                 </Box>
             </CardContent>
             <Divider />
