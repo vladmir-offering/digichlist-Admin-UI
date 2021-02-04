@@ -163,7 +163,7 @@ export function StylizePosition(position: string): string {
         case 'None':
             return 'Посада відсутня';
         case 'Cleaner':
-            return 'Сантіраний працівник';
+            return 'Прибиральниця';
         case 'Repairer':
             return 'Технічний працівник';
         default:
