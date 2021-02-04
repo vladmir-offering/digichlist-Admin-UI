@@ -1,15 +1,16 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { TableCell, TableRow, Button, Tooltip } from '@material-ui/core';
 import { Edit, Delete, Description, CheckCircle } from '@material-ui/icons';
 
 import styles from './DefectsTable.module.css';
-import { Defect } from '../DefectsModels';
-import DeleteDialog from '../DeleteDialog/DeleteDialog';
+import DeleteDialog from '../../../../common/components/DeleteDialog/DeleteDialog';
 import InfoDialog from '../InfoDialog/InfoDialog';
 import UpdateDialog from '../UpdateDialog/UpdateDialog';
 import Status from '../../../../common/components/Status/Status';
+import DefectsContext from '../DefectsContext';
 
 function DefectsTableRow({ defect, index, setStatus }): JSX.Element {
+    const { setDeleted } = useContext(DefectsContext);
     const [update, setUpdate] = React.useState(false);
     const [info, setInfo] = React.useState(false);
     const [del, setDel] = React.useState(false);
@@ -84,7 +85,13 @@ function DefectsTableRow({ defect, index, setStatus }): JSX.Element {
             </TableCell>
             <UpdateDialog open={update} setOpen={setUpdate} defect={defect} />
             <InfoDialog open={info} setOpen={setInfo} defect={defect} />
-            <DeleteDialog open={del} setOpen={setDel} id={defect._id} />
+            <DeleteDialog
+                open={del}
+                setOpen={setDel}
+                setDeleted={setDeleted}
+                title={'дефект'}
+                id={defect._id}
+            />
         </TableRow>
     );
 }
