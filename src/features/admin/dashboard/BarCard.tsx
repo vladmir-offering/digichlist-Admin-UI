@@ -1,11 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Button, Card, CardContent, CardHeader, CircularProgress, Divider } from '@material-ui/core';
+import {
+    Box,
+    Button,
+    Card,
+    CardContent,
+    CardHeader,
+    CircularProgress,
+    Divider,
+} from '@material-ui/core';
 import styles from './Dashboard.module.css';
 import { Bar } from 'react-chartjs-2';
-import Loader from '../../../common/components/Loader/Loader';
 
-function BarCard({ loaded, barData, barOptions, setFilteredDate }) {
+function BarCard({ loaded, barData, barOptions, setFilteredDate }: any): JSX.Element {
     const ChangeFilteredDate = (date_type) => {
         setFilteredDate(date_type);
     };

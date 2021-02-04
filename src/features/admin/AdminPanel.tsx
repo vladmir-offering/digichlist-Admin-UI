@@ -202,11 +202,11 @@ const AdminPanel = ({ setAuthInfo }): JSX.Element => {
                                     variant='circular'
                                     component={Link}
                                     to='/admin/admins'
+                                    src='/logo.png'
                                     className={classes.avatar}
                                 />
                             </StyledBadge>
                             <Typography
-                                // className={classes.name}
                                 color='textPrimary'
                                 variant='h5'>
                                 {admin_username}

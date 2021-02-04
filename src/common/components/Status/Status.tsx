@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Chip } from '@material-ui/core';
 
-function Satus({ status }): JSX.Element {
+function Satus({ status }: any): JSX.Element {
     const [statusLabel, setStatusLabel] = useState(<Chip label='Відкритий' color='secondary' />);
     useEffect(() => {
         switch (status.toString()) {

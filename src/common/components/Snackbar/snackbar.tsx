@@ -2,18 +2,21 @@ import React from 'react';
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert, { Color } from '@material-ui/lab/Alert';
 
-export const messages = [];
+export interface ISnackbar {
+    open: boolean;
+    message: string;
+    type: 'success' | 'info' | 'warning' | 'error';
+}
+export interface SnackbarProperties {
+    snack: {
+        open: boolean;
+        message: string;
+        type: 'success' | 'info' | 'warning' | 'error';
+    };
+    setSnack: any;
+}
 
-// interface Snackbar {
-//     snack: {
-//         open: boolean;
-//         message: string;
-//         type: Color;
-//     };
-//     setSnack(snack);
-// }
-
-export default function SnackbarHandler({ snack, setSnack }): JSX.Element {
+export default function SnackbarHandler({ snack, setSnack }: SnackbarProperties): JSX.Element {
     const closeSnack = (event, reason?) => {
         if (reason === 'clickaway') {
             return;
@@ -27,7 +30,7 @@ export default function SnackbarHandler({ snack, setSnack }): JSX.Element {
                 elevation={4}
                 variant='filled'
                 onClose={(event) => closeSnack(event)}
-                severity={snack.type}>
+                severity={snack.type as Color}>
                 {snack.message}
             </Alert>
         </Snackbar>

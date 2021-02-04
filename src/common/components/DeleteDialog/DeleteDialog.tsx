@@ -3,7 +3,7 @@ import { Dialog, DialogTitle, DialogActions, Button } from '@material-ui/core';
 
 import styles from './DeleteDialog.module.css';
 
-function InfoDialog({ open, setOpen, setDeleted, id, title }): JSX.Element {
+function InfoDialog({ open, setOpen, setDeleted, id, title }: any): JSX.Element {
     const closeModal = () => {
         setOpen(false);
     };

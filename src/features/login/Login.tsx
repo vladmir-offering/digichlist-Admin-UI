@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import { isLogged, login } from './../../common/utils/api';
-import SnackbarHandler from './../../common/components/Snackbar/snackbar';
+import SnackbarHandler, { ISnackbar } from './../../common/components/Snackbar/snackbar';
 
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import UserContext from './UserContext';
+
 const useStyles = makeStyles((theme) => ({
     paper: {
         marginTop: theme.spacing(8),
@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Login = ({ setAuthInfo }): JSX.Element => {
-    const [snack, setSnack] = useState({ open: false, message: '', type: 'success' });
+    const [snack, setSnack] = useState({ open: false, message: '', type: 'success' } as ISnackbar);
     const classes = useStyles();
 
     const initialValues = {

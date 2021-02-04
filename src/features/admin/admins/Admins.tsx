@@ -17,10 +17,10 @@ import AdminRow from './AdminRow';
 import AdminAddDialog from './AdminAddDialog';
 import { SupervisedUserCircle } from '@material-ui/icons';
 
-import SnackbarHandler from '../../../common/components/Snackbar/snackbar';
+import SnackbarHandler, { ISnackbar } from '../../../common/components/Snackbar/snackbar';
 import { Paper } from '@material-ui/core';
 
-export const Admins = () => {
+export const Admins = (): JSX.Element => {
     type Admin = Array<{
         email: string;
         username: string;
@@ -50,7 +50,11 @@ export const Admins = () => {
         delete: false,
         id: 0,
     });
-    const [snack, setSnack] = useState({ open: false, message: '', type: '' });
+    const [snack, setSnack] = useState({
+        open: false,
+        message: '',
+        type: 'success',
+    } as ISnackbar);
     useEffect(() => {
         (async function () {
             const response = await getAdmins();
