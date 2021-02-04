@@ -1,0 +1,12 @@
+.filterButton{
+    margin-right: 0.5rem !important;
+}
+.MuiCardHeader-root{
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+}
+.MuiCardHeader-action{
+    align-self: center !important;
+    margin: 0!important;
+}
