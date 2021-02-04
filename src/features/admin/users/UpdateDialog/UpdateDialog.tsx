@@ -33,13 +33,13 @@ function UpdateDialog({ open, setOpen, setUpdated, user }): JSX.Element {
 
     const intialFormValues = {
         first_name: user.first_name,
-        last_name: user.last_name === '' ? 'Прізвище відсутнє' : user.last_name,
+        last_name: user.last_name === 'Last name is missing' ? 'Прізвище відсутнє' : user.last_name,
         enabled: user.enabled,
         position: user.position,
     };
     const editValidationSchema = Yup.object().shape({
-        first_name: Yup.string().min(5, "Надто коротке ім'я").max(50, "Надто довге ім'я"),
-        last_name: Yup.string().min(5, 'Надто коротка назва').max(50, 'Надто довга назва'),
+        first_name: Yup.string().min(3, "Надто коротке ім'я").max(50, "Надто довге ім'я"),
+        last_name: Yup.string().min(3, 'Надто коротка назва').max(50, 'Надто довга назва'),
         enabled: Yup.string(),
         position: Yup.string(),
     });
@@ -125,7 +125,7 @@ function UpdateDialog({ open, setOpen, setUpdated, user }): JSX.Element {
                                         value={values.position}
                                         onBlur={handleBlur}
                                         onChange={handleChange}>
-                                        <MenuItem value={'Cleaner'}>Санітарний працівник</MenuItem>
+                                        <MenuItem value={'Cleaner'}>Прибиральниця</MenuItem>
                                         <MenuItem value={'Repairer'}>Технічний працівник</MenuItem>
                                         <MenuItem value={'None'}>Посада відсутня</MenuItem>
                                     </Select>

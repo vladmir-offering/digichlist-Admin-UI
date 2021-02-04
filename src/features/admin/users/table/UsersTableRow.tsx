@@ -1,6 +1,6 @@
 import React from 'react';
-import { TableCell, TableRow, Button, Tooltip } from '@material-ui/core';
-import { Edit, Delete, CheckCircle } from '@material-ui/icons';
+import { TableCell, TableRow, Button, Tooltip, IconButton } from '@material-ui/core';
+import { Edit, Delete, CheckCircle, LiveHelp } from '@material-ui/icons';
 
 import styles from './UsersTable.module.css';
 import DeleteDialog from '../../../../common/components/DeleteDialog/DeleteDialog';
@@ -12,10 +12,10 @@ function DefectsTableRow({ user, index, setEnabled, setDeleted, setUpdated }): J
     const [update, setUpdate] = React.useState(false);
     const [del, setDel] = React.useState(false);
     const position = StylizePosition(user.position);
+
     const checkHandler = () => {
         setEnabled({ status: true, data: { ...user }, value: true });
     };
-
     const openModal = (mode) => {
         switch (mode) {
             case 'update':
@@ -31,7 +31,18 @@ function DefectsTableRow({ user, index, setEnabled, setDeleted, setUpdated }): J
         <TableRow hover role='checkbox' tabIndex={-1}>
             <TableCell>{index}</TableCell>
             <TableCell>{user.username}</TableCell>
-            <TableCell>{user.first_name + ' ' + user.last_name}</TableCell>
+            <TableCell>
+                {user.first_name}
+                {user.last_name === 'Last name is missing' ? (
+                    <Tooltip title={'Прізвище відсутнє'}>
+                        <IconButton size="small">
+                            <LiveHelp />
+                        </IconButton>
+                    </Tooltip>
+                ) : (
+                    user.last_name
+                )}
+            </TableCell>
             <TableCell>{position}</TableCell>
             <TableCell align='center'>
                 <Status status={user.enabled} />
