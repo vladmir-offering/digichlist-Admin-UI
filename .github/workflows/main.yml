@@ -27,8 +27,8 @@ jobs:
         node-version: 14.x
     #- run: npm ci
     - run: npm install
-    - run: npm run build --prod
-    - run: npm test
+    - run: CI='' npm run build --prod
+    - run: CI='' npm test
     - run: | 
             ls
             ls digichlist-Admin-UI/
