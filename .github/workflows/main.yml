@@ -28,7 +28,7 @@ jobs:
     #- run: npm ci
     - run: npm install
     - run: CI='' npm run build --prod
-    - run: CI='' npm test
+    - run: npm test
     - run: | 
             ls
             ls digichlist-Admin-UI/
