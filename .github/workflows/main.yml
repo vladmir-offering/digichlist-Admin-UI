@@ -29,8 +29,8 @@ jobs:
     - run: npm install
     - run: CI='' npm run build --prod
     #- run: npm test
-    - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v2.2.2
-      with: 
-          name: artifact
-          path: build
+    #- name: Upload a Build Artifact
+   #   uses: actions/upload-artifact@v2.2.2
+  #    with: 
+ #         name: artifact
+#          path: build
