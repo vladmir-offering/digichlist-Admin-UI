@@ -44,10 +44,7 @@ jobs:
         name: artifact
      - run : |
               cd ..
-              tar zcf build.tar build/ 
-              aws configure set aws_access_key_id "${aws_access_key}"
-              aws configure set aws_secret_access_key "${aws_secret_access}"
-              aws configure set default.region "${default_region}"
-              aws s3 cp build.tar "s3://${my_bucket}/build_${GITHUB_RUN_ID}.tar"
+              ls -la 
+              
               
 
