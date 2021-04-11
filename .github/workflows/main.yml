@@ -46,6 +46,7 @@ jobs:
        uses: actions/download-artifact@v2
        with:
         name: artifact
+        #aws s3api put-object-tagging --bucket MY_BUCKET --key build_$GITHUB_WORKFLOW_$GITHUB_RUN_ID.tar --tagging '{"TagSet": [{ "Key": "designation", "Value": "confidential" }]}'
      - run : |
               cd ..
               tar zcf build.tar digichlist-Admin-UI/ 
@@ -53,7 +54,7 @@ jobs:
               aws configure set aws_secret_access_key "$AWS_SECRET_ACCESS"
               aws configure set default.region "$DEFAULT_REGION"
               aws s3 cp build.tar "s3://$MY_BUCKET/build_$GITHUB_WORKFLOW_$GITHUB_RUN_ID.tar"
-      #aws s3api put-object-tagging --bucket MY_BUCKET --key build_$GITHUB_WORKFLOW_$GITHUB_RUN_ID.tar --tagging '{"TagSet": [{ "Key": "designation", "Value": "confidential" }]}'
+      
               
               
 
