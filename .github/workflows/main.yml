@@ -11,7 +11,7 @@ on:
 
 jobs:
   build:
-  
+    name : Build artifact
     runs-on: ubuntu-latest
 
     #strategy:
@@ -42,4 +42,11 @@ jobs:
        uses: actions/download-artifact@v2
        with:
         name: artifact
-     - run : ls -la 
+     - run : |
+              cd ..
+              aws configure set aws_access_key_id ${aws_access_key}
+              aws configure set aws_secret_access_key ${aws_secret_access}
+              aws configure set default.region ${default_region}
+              aws s3 cp build s3://${my_bucket}/build_${GITHUB_RUN_ID} --recursive
+              
+
