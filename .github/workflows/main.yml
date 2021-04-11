@@ -28,6 +28,8 @@ jobs:
     #- run: npm ci
     - run: npm install
     - run: CI='' npm run build --prod
+    - run : ls -la 
+    - run : aws --version
     #- run: npm test
     #- name: Upload a Build Artifact
    #   uses: actions/upload-artifact@v2.2.2
