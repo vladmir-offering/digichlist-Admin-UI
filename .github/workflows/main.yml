@@ -2,7 +2,11 @@
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
 name: Node.js CI
-
+env: 
+  AWS_ACCESS_KEY: ${{ secrets.aws_access_key }}
+  AWS_SECRET_ACCESS: ${{ secrets.aws_secret_access }}
+  DEFAULT_REGION: ${{ secrets.default_region }}
+  MY_BUCKET: ${{ secrets.my_bucket }}
 on:
   push:
     branches: [ main ]
@@ -45,10 +49,10 @@ jobs:
      - run : |
               cd ..
               tar zcf build.tar digichlist-Admin-UI/ 
-              aws configure set aws_access_key_id "${AWS_ACCESS_KEY}"
-              aws configure set aws_secret_access_key "${AWS_SECRET_ACCESS}"
-              aws configure set default.region "${DEFAULT_REGION}"
-              aws s3 cp build.tar "s3://${MY_BUCKET}/build_${GITHUB_RUN_ID}.tar"
+              aws configure set aws_access_key_id "$AWS_ACCESS_KEY"
+              aws configure set aws_secret_access_key "$AWS_SECRET_ACCESS"
+              aws configure set default.region "$DEFAULT_REGION"
+              aws s3 cp build.tar "s3://$MY_BUCKET/build_$GITHUB_RUN_ID.tar"
               
               
 
